@@ -404,15 +404,6 @@ body {
   font-weight: 100;
 }
 
-.hidden {
-  display: flex;
-  width: 70px;
-  margin-top: -10px;
-  color: transparent;
-}
-.hidden:hover {
-  color: transparent;
-}
 
 /* -------------------------------------------- CSS från videon ---------------------------------------- */
 

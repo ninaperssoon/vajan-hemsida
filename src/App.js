@@ -63,9 +63,6 @@ function App() {
         
           <p>Du hittar oss här:</p>
           <ul>
-          <div className="hidden">
-              <NavLink className="nav-link hidden" exact to="/login" activeClassName="active">Logga in</NavLink>
-            </div>
             <li>
               <a className="custom-a py-2 px-2" href="https://www.facebook.com/groups/hbfvajan">
                 <img className="socials-image" src={facebookLogo}></img>
