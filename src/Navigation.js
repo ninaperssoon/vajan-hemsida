@@ -1,0 +1,62 @@
+import { NavLink, useLocation } from "react-router-dom";
+import logoRed from './images/logoRed.png';
+
+const Navigation = ({ isAuth, signUserOut }) => {
+  const location = useLocation();
+
+  const isAboutActive = location.pathname.startsWith('/aboutvajan') || location.pathname.startsWith('/aboutharken');
+
+  return (
+    <nav className="navbar navbar-default navbar-expand-lg navbar-light bg-light">
+      <div className="container-fluid">
+        <NavLink className="navbar-brand" to="/">
+          <img src={logoRed} alt="Logo" width="50" height="50"></img>
+        </NavLink>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <NavLink className="nav-link" exact to="/" activeClassName="active">Hem</NavLink>
+            </li>
+
+            <li className={`nav-item dropdown nav-link-dropdown ${isAboutActive ? 'active' : ''}`}>
+              <span className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Om oss
+              </span>
+              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><NavLink className="dropdown-item" to="/aboutvajan" activeClassName="active">Om Vajan</NavLink></li>
+                <li><NavLink className="dropdown-item" to="/aboutharken" activeClassName="active">Härken</NavLink></li>
+              </ul>
+            </li>
+
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/imagearchive" activeClassName="active">Fotoarkiv</NavLink>
+            </li>
+
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/contact" activeClassName="active">Kontakt</NavLink>
+            </li>
+
+            {!isAuth ? (
+              console.log( )
+            ) : (
+              <>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/createpost" activeClassName="active">Skapa inlägg</NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/uploadimages" activeClassName="active">Ladda upp bilder</NavLink>
+                </li>
+                <button className="btn btn-primary" onClick={signUserOut}> Logga ut </button>
+              </>
+            )}
+          </ul>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+export default Navigation;

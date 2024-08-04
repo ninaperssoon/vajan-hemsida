@@ -1,0 +1,586 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+
+h1 {
+  font-size: 42px;
+  color: white;
+  font-weight: bold;
+  font-family: 'Inter', sans-serif;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  color: white;
+  font-family: 'Inter', sans-serif;
+}
+
+.date {
+  font-size: 14px;
+  color: #757575;
+
+}
+
+.container {
+  width: 70%;
+  background-color: white;
+  border-radius: 1em;
+  padding: 2em;
+}
+
+.navbar-light .navbar-nav .nav-link.active {
+  color: #C22D2D;
+}
+
+.nav-link:hover {
+  color: #C22D2D;
+}
+
+.hero-image {
+  position: relative;
+  width: 100%;
+  height: 500px; /* Justera höjden efter behov */
+  background-image: url('./images/vårbal_2024.jpg');
+  background-size: cover;
+  background-position: center;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  
+}
+
+.hero-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  white-space: nowrap;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+}
+
+.hero-title {
+  font-size: 4em;
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 3em;
+    white-space: wrap;
+    line-height: 1.6em;
+  }
+
+  .container {
+    width: 100%;
+    border-radius: 0;
+    padding: 0.5em;
+    margin: 0;
+  }
+  .post {
+    margin: 0;
+    max-width: 100%;
+  }
+
+  .card .info-card {
+    margin:0;
+  }
+
+  .special {
+    margin-left: -1em;
+  }
+
+}
+
+body {
+  background-color: #C22D2D;
+  height: 100%;
+  margin: 0;
+}
+
+.post {
+  width: 600px; /* Fast bredd */
+  box-sizing: border-box; /* Inkludera padding och border i bredden */
+  padding: 10px;
+  margin: 10px auto; /* Centrerar behållaren horisontellt */
+  border: 1px solid #ddd;
+  overflow-x: hidden; /* Förhindra horisontell scroll */
+  /* Låt höjden anpassa sig efter innehållet */
+}
+
+.post img {
+  max-width: 100%; /* Gör att bilden inte blir bredare än sin behållare */
+  height: auto; /* Behåll bildens proportioner */
+  display: block; /* Tar bort eventuell extra utrymme under bilden */
+}
+
+.dropdown-item {
+  font-size: small;
+  width: 100%;
+  margin-left: 0;
+  border-radius: 5px;
+
+}
+
+.dropdown-item:hover {
+  color: #C22D2D;
+}
+
+.dropdown-item.active {
+  background-color: transparent;
+  color: #C22D2D;
+}
+
+.dropdown-item:focus {
+  background-color: #C22D2D;
+  color: white;
+}
+
+.dropdown-menu {
+  padding: 0.5em;
+
+}
+
+.nav-link-dropdown {
+  display: flex;
+  align-items: center;
+}
+
+.divider {
+  background-color: #C22D2D;
+  width: 100%;
+  height: 0.2em;
+  border-radius: 5px;
+  box-shadow: inset 0 0 2px #00000094;
+
+}
+
+.preformatted-text {
+  white-space: pre-wrap; /* Bevara radbrytningar och mellanslag */
+}
+
+.info-card {
+  background-color: #FFF597;
+  border-style: none;
+  margin-left: 2em;
+  position: sticky;
+  top: 20px; /* Adjust as needed */
+}
+
+/* src/Footer.css */
+
+.footer {
+  background-color: #f8f9fa;
+  padding: 20px 0;
+  text-align: center;
+  border-top: 1px solid #e5e5e5;
+  margin-top: auto;
+}
+
+.footer .container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+}
+
+.footer ul li {
+  display: inline;
+  margin: 0 10px;
+}
+
+.footer ul li a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.footer ul li a:hover {
+  text-decoration: underline;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensures the root element takes up at least the full viewport height */
+}
+
+.socials-image {
+  height: 1.5em;
+  width: 1.5em;
+  margin-top: -5px;
+}
+
+.custom-a {
+  margin: 0;
+  border-radius: 50%;
+  border-style: none;
+  justify-content: center;
+  align-items: center;
+  background-color: #FFF597;
+  box-shadow: 0 0 5px #360d0d48;
+
+}
+
+.custom-a:hover {
+  background-color: #C22D2D;
+}
+
+.album-container {
+  width: 90%;
+  background-color: transparent;
+  border-radius: 0;
+}
+
+
+.image-archive-page {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.album-container {
+  width: 100%;
+}
+
+.album-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); /* Dynamisk kolumnlayout */
+  gap: 20px; /* Avstånd mellan albumen */
+}
+
+.album {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: left;
+  background-color: white;
+  height: 250px; /* Fast höjd för alla albumdivar */
+}
+
+.album img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+
+.album h2 {
+  font-size: 1.2em;
+  margin: 10px 0;
+  text-align: left; /* Align heading text to the left */
+}
+
+.album:hover {
+  cursor: pointer;
+}
+
+.album-photos-page {
+  display: flex;
+  align-items: center;
+}
+.album img {
+  width: 100%; /* Använd 100% för att fylla föräldraelementet */
+  height: 200px; /* Sätt en fast höjd för att hålla dimensionerna konsekventa */
+  object-fit: cover; /* Gör att bilden fyller området utan att bli förvrängd */
+}
+
+.album-link {
+  color: black;
+  text-decoration: none;
+}
+
+.album-link:hover {
+  color: #C22D2D;
+}
+
+.photos-container {
+  background-color: transparent;
+}
+
+.return {
+  color: white;
+  margin-top: 5em;
+}
+
+.photos-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.photo {
+  background-color: white;
+  margin: 0.5em;
+  height: 100px;
+  padding: 0.3em;
+  border-radius: 0.2em;
+}
+
+.photo-image {
+  height: 100%;
+}
+
+.photo-image:hover {
+  cursor: pointer;
+}
+
+.harken-image {
+  width: 100%;
+}
+
+.harken-image-list {
+  height: 5%;
+  background-color: white;
+  padding: 0.3em;
+  border-radius: 0.2em;
+}
+
+/* AlbumDetail.css */
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.overlay-image {
+  max-width: 80%;
+  max-height: 80%;
+}
+
+.close-button,
+.prev-button,
+.next-button {
+  position: absolute;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.close-button {
+  top: 20px;
+  right: 20px;
+}
+
+.prev-button {
+  left: 20px;
+}
+
+.next-button {
+  right: 20px;
+}
+
+.info-text {
+  color: white;
+  font-size: 20px;
+  font-weight: 100;
+}
+/* -------------------------------------------- CSS från videon ---------------------------------------- */
+
+.App {
+  text-align: center;
+}
+body {
+  padding: 0%;
+  margin: 0%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Open Sans', sans-serif;
+
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+a {
+  color: #C22D2D;
+  text-decoration: none;
+  text-decoration: underline;
+}
+
+.createPostPage {
+  width: 100%;
+  height: calc(100vh - 80px);
+  display: grid;
+  place-items: center;
+}
+
+.cpContainer {
+  width: 500px;
+  height: auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cpContainer h1 {
+  text-align: center;
+}
+
+.cpContainer label {
+  font-size: 25px;
+}
+.cpContainer .inputGp {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGp input,
+.inputGp textarea {
+  font-size: 18px;
+  border: none;
+  border-radius: 2px;
+  padding: 5px;
+}
+
+.inputGp input {
+  height: 40px;
+}
+.inputGp textarea {
+  height: 150px;
+  border-style: solid;
+  border-color: #757575;
+}
+
+.cpContainer button {
+  margin-top: 20px;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+}
+input,
+textarea {
+  margin-top: 5px;
+}
+
+.loginPage {
+  width: 100vw;
+  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginPage p {
+  font-size: 30px;
+}
+
+/* GOOGLE BUTTOn */
+.login-with-google-btn {
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  padding: 5px 16px 12px 42px;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
+  color: #757575;
+  font-size: 25px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=);
+  background-color: white;
+  background-repeat: no-repeat;
+  background-position: 12px 17px;
+}
+.login-with-google-btn:hover {
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+.login-with-google-btn:active {
+  background-color: #eeeeee;
+}
+.login-with-google-btn:focus {
+  outline: none;
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25),
+    0 0 0 3px #c8dafc;
+}
+.login-with-google-btn:disabled {
+  filter: grayscale(100%);
+  background-color: #ebebeb;
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
+  cursor: not-allowed;
+}
+
+.homePage {
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 1em;
+}
+
+.homePage .post {
+  height: auto;
+  border-style: none;
+}
+
+.post .postHeader {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.postHeader .title {
+  flex: 50%;
+}
+.postHeader .deletePost {
+  flex: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.deletePost button {
+  border: none;
+  background: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #C22D2D;
+}
+
+.post .postTextContainer {
+  word-wrap: break-word;
+  height: auto;
+  font-size: 16px;
+  width: 100%;
+  overflow: hidden;
+  overflow-y: auto;
+}
