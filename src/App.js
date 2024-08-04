@@ -18,6 +18,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';  // Bootstrap JS-bundle med Pop
 import Navigation from './Navigation';
 import facebookLogo from './images/facebook.png';
 import instagramLogo from './images/instagram.png';
+import { NavLink } from "react-router-dom";
+
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -47,7 +49,7 @@ function App() {
             <Route path="/" element={<Home isAuth={isAuth} />} />
             <Route path="/createpost" element={<PrivateRoutes component={CreatePost} />} />
             <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
-            <Route path="/uploadimages" element={<PrivateRoutes component={CreatePost} />} />
+            <Route path="/uploadimages" element={<PrivateRoutes component={UploadImages} />} />
             <Route path="/imagearchive" element={<ImageArchive />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/aboutharken" element={<AboutHarken />} />
@@ -58,8 +60,12 @@ function App() {
 
         <footer className="footer">
         <div >
+        
           <p>Du hittar oss här:</p>
           <ul>
+          <div className="hidden">
+              <NavLink className="nav-link hidden" exact to="/login" activeClassName="active">Logga in</NavLink>
+            </div>
             <li>
               <a className="custom-a py-2 px-2" href="https://www.facebook.com/groups/hbfvajan">
                 <img className="socials-image" src={facebookLogo}></img>
@@ -70,8 +76,12 @@ function App() {
                 <img className="socials-image" src={instagramLogo}></img>
               </a>
             </li>
+            
           </ul>
+          
         </div>
+        
+        
       </footer>
       </div>
     </Router>

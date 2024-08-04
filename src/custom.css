@@ -98,6 +98,7 @@ h3 {
 
 }
 
+
 body {
   background-color: #C22D2D;
   height: 100%;
@@ -402,6 +403,17 @@ body {
   font-size: 20px;
   font-weight: 100;
 }
+
+.hidden {
+  display: flex;
+  width: 70px;
+  margin-top: -10px;
+  color: transparent;
+}
+.hidden:hover {
+  color: transparent;
+}
+
 /* -------------------------------------------- CSS från videon ---------------------------------------- */
 
 .App {
