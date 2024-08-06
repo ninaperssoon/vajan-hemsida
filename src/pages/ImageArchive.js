@@ -36,7 +36,7 @@ function ImageArchive() {
   return (
     <div className='image-archive-page'>
       <div className="container album-container mb-5">
-        <h1 className='my-5'>Vajans fotoarkiv</h1>
+        <h1 className='mt-2 mb-5 '>Vajans fotoarkiv</h1>
         <div className="album-list">
           {albums.map((album, index) => (
             <div className="album" key={index}>

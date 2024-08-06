@@ -5,40 +5,86 @@ import { auth, db } from "../firebase-config";
 function Home({ isAuth }) {
   const [postLists, setPostList] = useState([]);
   const postsCollectionRef = collection(db, "posts");
+  const [tags, setTags] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedTag, setSelectedTag] = useState(null);
 
   const deletePost = async (id) => {
     const postDoc = doc(db, "posts", id);
     await deleteDoc(postDoc);
-    getPosts(); // Refresh the list after deleting a post
+    getPosts();
   };
 
   const getPosts = async () => {
     try {
-      // Create query with orderBy timeStamp
       const q = query(postsCollectionRef, orderBy("timeStamp", "desc"));
       const querySnapshot = await getDocs(q);
-
 
       if (querySnapshot.empty) {
         console.log("No documents found");
       } else {
-        querySnapshot.forEach((doc) => {
-          console.log("Document ID:", doc.id);
-          console.log("Document Data:", doc.data());
-        });
-
         const posts = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-        console.log("Posts array:", posts);
         setPostList(posts);
+        setFilteredPosts(posts);
       }
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
   };
 
+  const fetchTags = async () => {
+    const tagsCollection = collection(db, 'tags');
+    const tagsSnapshot = await getDocs(tagsCollection);
+    const tagsList = tagsSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    setTags(tagsList);
+  };
+
+  const getTagNames = (tagIds) => {
+    return tagIds.map(tagId => {
+      const tag = tags.find(t => t.id === tagId);
+      return tag ? tag.name : "Unknown Tag";
+    });
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value.toLowerCase());
+  };
+
   useEffect(() => {
     getPosts();
+    fetchTags();
   }, []);
+
+  useEffect(() => {
+    const filtered = postLists.filter(post => {
+      const titleMatches = post.title.toLowerCase().includes(searchTerm);
+      const tagsMatch = post.selectedTags && getTagNames(post.selectedTags).some(tagName =>
+        tagName.toLowerCase().includes(searchTerm)
+      );
+      return titleMatches || tagsMatch;
+    });
+    setFilteredPosts(filtered);
+  }, [searchTerm, postLists, tags]);
+
+  useEffect(() => {
+    if (selectedTag) {
+      const filtered = postLists.filter(post => 
+        post.selectedTags && post.selectedTags.includes(selectedTag)
+      );
+      setFilteredPosts(filtered);
+    } else {
+      setFilteredPosts(postLists);
+    }
+  }, [selectedTag, postLists]);
+
+  const handleTagChange = (event) => {
+    const tagId = event.target.id;
+    setSelectedTag(prevSelectedTag => (prevSelectedTag === tagId ? null : tagId));
+  };
 
   return (
     <>
@@ -51,8 +97,39 @@ function Home({ isAuth }) {
       <div className="homePage">
         <div className="container mb-4">
           <div className="row">
-            <div className="col-sm-8 p-0">
-              {postLists.map((post) => (
+            <div className="col-lg-3 col-md-6 special">
+              <div className="card info-card mt-3">
+                <form className="form-inline my-2 my-lg-0">
+                  <input
+                    className="form-control mr-sm-2"
+                    type="search"
+                    placeholder="Sök"
+                    aria-label="Search"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                  />
+                </form>
+                <div className="mt-3">
+                  <h2>Taggar</h2>
+                  <div className="checkbox-buttons mt-3">
+                    {tags.map((tag) => (
+                      <div key={tag.id}>
+                        <input 
+                          type='checkbox' 
+                          id={tag.id} 
+                          className='checkbox-button' 
+                          checked={selectedTag === tag.id}
+                          onChange={handleTagChange} 
+                        />
+                        <label htmlFor={tag.id} className='checkbox-label px-3'>{tag.name}</label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-9 col-md-6 p-0">
+              {filteredPosts.map((post) => (
                 <div key={post.id}>
                   <div className="post">
                     <div className="postHeader">
@@ -71,17 +148,30 @@ function Home({ isAuth }) {
                     <div className="postTextContainer preformatted-text">{post.postText}</div>
                     {post.imageUrl && <img src={post.imageUrl} alt="Post" />}
                     <p className="mt-3">Vaj vaj, {post.author.name}</p>
+                    <hr></hr>
+                    <div className="align-items-center d-flex">
+                      <div className="mx-2">
+                        <span>Taggar:</span>
+                      </div>
+                      <div className="checkbox-buttons">
+                        {post.selectedTags && getTagNames(post.selectedTags).map((tagName, index) => (
+                          <div key={index} className="checkbox-label px-3">
+                            <span className="tag">{tagName}</span>
+                          </div>
+                        ))}
+                        {!post.selectedTags && (
+                          <div className="checkbox-label px-3">
+                            <span className="tag">Okategoriserat</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <div className="divider my-4"></div>
+                  <div className="d-flex justify-content-center">
+                    <div className="divider my-4"></div>
+                  </div>
                 </div>
               ))}
-            </div>
-            <div className="col-sm-4 special">
-              <div className="card info-card p-4">
-                <h2>Välkommen!</h2>
-                <p>Här kan det stå lite kort information om Hembygdsföreningen Vajan. Vill dom läsa mer kan dom trycka på en länken här som tar de vidare till sidan <a href="/aboutVajan">om oss</a>, som de även kan finna i headern.</p>
-                <p>Jag skriver lite till för att ge extra effekt av denna ruta. Färgen är jag lite osäker på, men vill få in gult på något sätt. Kanske på knappar?</p>
-              </div>
             </div>
           </div>
         </div>

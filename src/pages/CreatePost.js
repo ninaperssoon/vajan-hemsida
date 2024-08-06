@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import React, { useEffect, useState } from 'react';
+import { addDoc, collection, getDocs, serverTimestamp } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL, getStorage, listAll } from 'firebase/storage';
 import { auth, db, storage } from '../firebase-config';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,8 +9,36 @@ function CreatePost() {
   const [title, setTitle] = useState("");
   const [postText, setPostText] = useState("");
   const [image, setImage] = useState(null);
+  const [tags, setTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
   const postCollecctionRef = collection(db, "posts");
+
+  console.log(selectedTags)
+
   let navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      const tagsCollection = collection(db, 'tags');
+      const tagsSnapshot = await getDocs(tagsCollection);
+      const tagsList = tagsSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setTags(tagsList);
+    };
+
+    fetchTags();
+  }, []);
+
+  const handleTagChange = (event) => {
+    const { id, checked } = event.target;
+    if (checked) {
+      setSelectedTags([...selectedTags, id]);
+    } else {
+      setSelectedTags(selectedTags.filter(tagId => tagId !== id));
+    }
+  };
 
   const createPost = async () => {
     if (!auth.currentUser) {
@@ -31,6 +59,7 @@ function CreatePost() {
       postText,
       imageUrl,
       formattedDate,
+      selectedTags,
       author: { name: auth.currentUser.displayName, id: auth.currentUser.uid },
       timeStamp: serverTimestamp()
     });
@@ -45,11 +74,11 @@ function CreatePost() {
   }
 
   return (
-    <div className='createPostPage'>
+    <div className='createPostPage my-3'>
       <div className='cpContainer'>
         <h2>Skapa nytt inlägg</h2>
         <div className='inputGp'>
-          <label>Titel:</label>
+          <label className='cp-label'>Titel:</label>
           <input 
             placeholder='Titel...' 
             onChange={(event) => { 
@@ -58,7 +87,7 @@ function CreatePost() {
           />
         </div>
         <div className='inputGp'>
-          <label>Inlägg:</label>
+          <label className='cp-label'>Inlägg:</label>
           <textarea 
             placeholder='Skriv ditt inlägg här' 
             onChange={(event) => {
@@ -67,13 +96,26 @@ function CreatePost() {
           />
         </div>
         <div className='inputGp'>
-          <label>Ladda upp bild:</label>
+          <label className='cp-label'>Ladda upp bild:</label>
           <input 
             type='file'
             onChange={(event) => {
               setImage(event.target.files[0]);
             }}
           />
+        </div>
+        <div className='inputGp'>
+          <label className='cp-label mb-2'>Taggar:</label>
+          <div className='checkbox-buttons'>
+            {tags.map((tag) => (
+              <div>
+                <input type='checkbox' id={tag.id} className='checkbox-button' onChange={handleTagChange}/>
+                <label for={tag.id} className='checkbox-label px-4 py-1 custom-size'>{tag.name}</label>
+              </div>
+              
+            ))}
+          </div>
+          
         </div>
         <button onClick={createPost}>Publicera</button>
       </div>

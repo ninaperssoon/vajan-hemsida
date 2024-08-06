@@ -70,7 +70,7 @@ function AlbumDetail() {
   return (
     <div>
       <div className='container album-container'>
-        <div className='mt-5 mb-3'>
+        <div className='mt-2 mb-3'>
           <a href='/imagearchive' className='return'>Tillbaka till fotoarkivet</a>
           <h1>{albumName}</h1>
         </div>
