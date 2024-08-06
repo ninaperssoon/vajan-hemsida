@@ -54,6 +54,14 @@ function Home({ isAuth }) {
     setSearchTerm(event.target.value.toLowerCase());
   };
 
+  const handleTagClick = (tagId) => {
+    if (selectedTag === tagId) {
+      setSelectedTag(null); // Deselect tag if it's already selected
+    } else {
+      setSelectedTag(tagId); // Select the new tag
+    }
+  };
+
   useEffect(() => {
     getPosts();
     fetchTags();
@@ -80,11 +88,6 @@ function Home({ isAuth }) {
       setFilteredPosts(postLists);
     }
   }, [selectedTag, postLists]);
-
-  const handleTagChange = (event) => {
-    const tagId = event.target.id;
-    setSelectedTag(prevSelectedTag => (prevSelectedTag === tagId ? null : tagId));
-  };
 
   return (
     <>
@@ -119,7 +122,7 @@ function Home({ isAuth }) {
                           id={tag.id} 
                           className='checkbox-button' 
                           checked={selectedTag === tag.id}
-                          onChange={handleTagChange} 
+                          onChange={() => handleTagClick(tag.id)} 
                         />
                         <label htmlFor={tag.id} className='checkbox-label px-3'>{tag.name}</label>
                       </div>
@@ -150,13 +153,18 @@ function Home({ isAuth }) {
                     <p className="mt-3">Vaj vaj, {post.author.name}</p>
                     <hr></hr>
                     <div className="align-items-center d-flex">
-                      <div className="mx-2">
+                     {/*  <div className="mx-2">
                         <span>Taggar:</span>
-                      </div>
+                      </div> */}
                       <div className="checkbox-buttons">
                         {post.selectedTags && getTagNames(post.selectedTags).map((tagName, index) => (
                           <div key={index} className="checkbox-label px-3">
-                            <span className="tag">{tagName}</span>
+                            <span 
+                              className="tag" 
+                              onClick={() => handleTagClick(post.selectedTags[index])}
+                            >
+                              {tagName}
+                            </span>
                           </div>
                         ))}
                         {!post.selectedTags && (

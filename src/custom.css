@@ -72,6 +72,10 @@ h3 {
   color: var(--primary-hover-color);
 }
 
+.nav-link:focus {
+  color: var(--primary-focus-color);
+}
+
 .hero-image {
   position: relative;
   width: 100%;
@@ -257,16 +261,20 @@ body {
 .custom-a {
   margin: 0;
   border-radius: 50%;
-  border-style: none;
+  border-style: solid;
+  border-width: 0.2em;
   justify-content: center;
   align-items: center;
   background-color: var(--bg-secondary);
-  box-shadow: 0 0 5px #360d0d48;
+  border-color: var(--pill-border-color);
 }
 
 .custom-a:hover {
-  background-color: var(--bg-primary);
+  background-color: var(--pill-hover-color);
+  transform: scale(1.05); 
+
 }
+
 
 .album-container {
   width: 100%;

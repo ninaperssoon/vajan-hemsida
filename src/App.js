@@ -62,7 +62,7 @@ function App() {
         <div >
         
           <p>Du hittar oss här:</p>
-          <ul>
+          <ul className="mt-3">
             <li>
               <a className="custom-a py-2 px-2" href="https://www.facebook.com/groups/hbfvajan">
                 <img className="socials-image" src={facebookLogo}></img>
