@@ -9,6 +9,9 @@ function Home({ isAuth }) {
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTag, setSelectedTag] = useState(null);
+  const [selectedDate, setSelectedDate] = useState({ month: null, year: null });
+  const [archiveDates, setArchiveDates] = useState([]);
+  console.log(archiveDates)
 
   const deletePost = async (id) => {
     const postDoc = doc(db, "posts", id);
@@ -27,10 +30,26 @@ function Home({ isAuth }) {
         const posts = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         setPostList(posts);
         setFilteredPosts(posts);
+        generateArchiveDates(posts);
       }
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
+  };
+
+  const generateArchiveDates = (posts) => {
+    const dates = posts.map(post => {
+      const postDate = new Date(post.timeStamp.seconds * 1000);
+      return { month: postDate.getMonth() + 1, year: postDate.getFullYear() };
+    });
+
+    const uniqueDates = Array.from(new Set(dates.map(date => `${date.year}-${date.month}`)))
+                             .map(dateString => {
+                               const [year, month] = dateString.split('-').map(Number);
+                               return { month, year };
+                             });
+
+    setArchiveDates(uniqueDates);
   };
 
   const fetchTags = async () => {
@@ -62,6 +81,14 @@ function Home({ isAuth }) {
     }
   };
 
+  const handleDateChange = (month, year) => {
+    if (selectedDate.month === month && selectedDate.year === year) {
+      setSelectedDate({ month: null, year: null });
+    } else {
+      setSelectedDate({ month, year });
+    }
+  };
+
   useEffect(() => {
     getPosts();
     fetchTags();
@@ -89,6 +116,18 @@ function Home({ isAuth }) {
     }
   }, [selectedTag, postLists]);
 
+  useEffect(() => {
+    if (selectedDate.month && selectedDate.year) {
+      const filtered = postLists.filter(post => {
+        const postDate = new Date(post.timeStamp.seconds * 1000);
+        return postDate.getMonth() + 1 === selectedDate.month && postDate.getFullYear() === selectedDate.year;
+      });
+      setFilteredPosts(filtered);
+    } else {
+      setFilteredPosts(postLists);
+    }
+  }, [selectedDate, postLists]);
+
   return (
     <>
       <div className="hero-image">
@@ -98,10 +137,10 @@ function Home({ isAuth }) {
       </div>
 
       <div className="homePage">
-        <div className="container mb-4">
-          <div className="row">
-            <div className="col-lg-3 col-md-6 special">
-              <div className="card info-card mt-3">
+        <div className="mb-4 px-lg-5 px-md-2 px-1 py-3">
+          <div className="row px-5">
+            <div className="col-lg-3 col-md-6 ">
+              <div className="card info-card p-4 mb-3">
                 <form className="form-inline my-2 my-lg-0">
                   <input
                     className="form-control mr-sm-2"
@@ -113,7 +152,7 @@ function Home({ isAuth }) {
                   />
                 </form>
                 <div className="mt-3">
-                  <h2>Taggar</h2>
+                  <h2>Kategorier</h2>
                   <div className="checkbox-buttons mt-3">
                     {tags.map((tag) => (
                       <div key={tag.id}>
@@ -129,57 +168,77 @@ function Home({ isAuth }) {
                     ))}
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className="col-lg-9 col-md-6 p-0">
-              {filteredPosts.map((post) => (
-                <div key={post.id}>
-                  <div className="post">
-                    <div className="postHeader">
-                      <div className="title">
-                        <h2>{post.title}</h2>
-                        <p className="date">{post.formattedDate}</p>
-                      </div>
-                      <div className="deletePost">
-                        {isAuth && post.author.id === auth.currentUser.uid && (
-                          <button onClick={() => deletePost(post.id)}>
-                            <p>Radera inlägg</p>
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                    <div className="postTextContainer preformatted-text">{post.postText}</div>
-                    {post.imageUrl && <img src={post.imageUrl} alt="Post" />}
-                    <p className="mt-3">Vaj vaj, {post.author.name}</p>
-                    <hr></hr>
-                    <div className="align-items-center d-flex">
-                     {/*  <div className="mx-2">
-                        <span>Taggar:</span>
-                      </div> */}
-                      <div className="checkbox-buttons">
-                        {post.selectedTags && getTagNames(post.selectedTags).map((tagName, index) => (
-                          <div key={index} className="checkbox-label px-3">
-                            <span 
-                              className="tag" 
-                              onClick={() => handleTagClick(post.selectedTags[index])}
-                            >
-                              {tagName}
-                            </span>
-                          </div>
-                        ))}
-                        {!post.selectedTags && (
-                          <div className="checkbox-label px-3">
-                            <span className="tag">Okategoriserat</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="d-flex justify-content-center">
-                    <div className="divider my-4"></div>
+                <div className="mt-3">
+                  <h2>Arkiv</h2>
+                  <div className="archive-menu">
+                    {archiveDates.map((date, index) => (
+                      <button 
+                        key={index} 
+                        onClick={() => handleDateChange(date.month, date.year)}
+                        className={`btn-link mt-2 ${selectedDate.month === date.month && selectedDate.year === date.year ? 'btnn-link-active' : ''}`}
+                      >
+                        {new Date(date.year, date.month - 1).toLocaleString('default', { month: 'long' })} {date.year}
+                      </button>
+                    ))}
                   </div>
                 </div>
-              ))}
+              </div>
+            </div>
+            <div className="col-lg-9 col-md-6">
+            {filteredPosts.length > 0 ? (
+                filteredPosts.map((post) => (
+                  <div key={post.id}>
+                    <div className="post p-4">
+                      <div className="postHeader">
+                        <div className="title">
+                          <h2>{post.title}</h2>
+                          <p className="date">{new Date(post.timeStamp.seconds * 1000 + post.timeStamp.nanoseconds / 1000000).toLocaleDateString()}</p>
+                        </div>
+                        <div className="deletePost">
+                          {isAuth && post.author.id === auth.currentUser.uid && (
+                            <button onClick={() => deletePost(post.id)}>
+                              <p>Radera inlägg</p>
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                      <div className="postTextContainer preformatted-text">{post.postText}</div>
+                        {post.imageUrl && <img src={post.imageUrl} alt="Post" />}
+                        <p className="mt-3">Vaj vaj, {post.author.name}</p>
+                        <hr></hr>
+                        <div className="align-items-center d-flex">
+                          <div className="mx-2">
+                            <span>Taggar:</span>
+                          </div>
+                          <div className="checkbox-buttons">
+                            {post.selectedTags && getTagNames(post.selectedTags).map((tagName, index) => (
+                              <div key={index} className="checkbox-label px-3">
+                                <span 
+                                  className="tag" 
+                                  onClick={() => handleTagClick(post.selectedTags[index])}
+                                >
+                                  {tagName}
+                                </span>
+                              </div>
+                            ))}
+                            {!post.selectedTags && (
+                              <div className="checkbox-label px-3">
+                                <span className="tag">Okategoriserat</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="d-flex justify-content-center">
+                        <div className="divider my-4"></div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="col-lg-9 col-md-6 no-posts">
+                    <h1>Inga inlägg matchar din sökning.</h1>
+                  </div>
+                )}
             </div>
           </div>
         </div>

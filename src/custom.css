@@ -14,12 +14,12 @@
   --primary-focus-color: #8D1414;
   --bg-primary: #C22D2D;
   --bg-light: #FFFFFF;
-  --bg-secondary: #FFF597;
-  --pill-primary: #FFF597;
-  --pill-border-color: #F3DB00;
-  --pill-active-color: #F3DB00;
-  --pill-focus-color: #F3DB00;
-  --pill-hover-color: #F3DB00;
+  --bg-secondary: #FFE9B1;
+  --pill-primary: #FFE9B1;
+  --pill-border-color: #FEC21F;
+  --pill-active-color: #FEC21F;
+  --pill-focus-color: #FEC21F;
+  --pill-hover-color: #FEC21F;
   --primary-border-color: #898989;
 }
 
@@ -48,13 +48,11 @@ h3 {
   border-width: 0.2em;
   border-color: var(--pill-focus-color);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-
 }
 
 .date {
   font-size: 14px;
   color: var(--muted-text-color);
-
 }
 
 .container {
@@ -120,22 +118,12 @@ h3 {
     padding: 0.5em;
     margin: 0;
   }
-  .post {
-    margin: 0;
-    max-width: 100%;
-    color: var(--default-text-color)
-  }
 
   .card .info-card {
     margin:0;
   }
 
-  .special {
-    margin-left: -1em;
-  }
-
 }
-
 
 body {
   background-color: var(--bg-primary);
@@ -144,13 +132,13 @@ body {
 }
 
 .post {
-  width: 600px; /* Fast bredd */
+  width: 100%;
   box-sizing: border-box; /* Inkludera padding och border i bredden */
-  padding: 10px;
-  margin: 10px auto; /* Centrerar behållaren horisontellt */
-  border: 1px solid #ddd;
+  border: 0.1em solid #ddd;
   overflow-x: hidden; /* Förhindra horisontell scroll */
-  /* Låt höjden anpassa sig efter innehållet */
+  background-color: var(--bg-light);
+  font-weight: lighter;
+  border-radius: 1em;
 }
 
 .post img {
@@ -164,7 +152,6 @@ body {
   width: 100%;
   margin-left: 0;
   border-radius: 5px;
-
 }
 
 .dropdown-item:hover {
@@ -208,7 +195,25 @@ body {
   border-style: none;
   position: sticky;
   top: 20px; /* Adjust as needed */
+  background-color: var(--bg-light);
+  border-radius: 1em;
+  border: 0.1em solid #ddd;
 }
+
+
+.no-posts {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .homePage .col-lg-3, .homePage .col-lg-9 {
+    max-width: 100%;
+    flex-basis: 100%;
+  }
+}
+
 
 /* src/Footer.css */
 
@@ -272,7 +277,6 @@ body {
 .custom-a:hover {
   background-color: var(--pill-hover-color);
   transform: scale(1.05); 
-
 }
 
 
@@ -437,7 +441,50 @@ hr {
   border-color: var(--primary-border-color);
 }
 
+.archive-menu {
+  display: flex;
+  flex-direction: column;
+}
 
+.btn-primary {
+  background-color: var(--bg-primary);
+  border-color: var(--primary-focus-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-focus-color);
+  border-color: var(--primary-focus-color);
+}
+
+.btn-primary .active {
+  background-color: var(--primary-active-color);
+  border-color: var(--primary-active-color);
+}
+
+.btn .btn-primary:focus {
+  background-color: var(--primary-focus-color);
+  border-color: var(--primary-focus-color);
+}
+
+.btn-link {
+  color: var(--default-link-color);
+  background-color: transparent;
+  border-style: none;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.btn-link:hover {
+  color: var(--primary-hover-color);
+}
+
+.btn-link .active {
+  color: var(--primary-active-color);
+}
+
+.btn .btn-link:focus {
+  color: var(--primary-focus-color);
+}
 
 /* -------------------------------------------- CSS från videon ---------------------------------------- */
 
@@ -621,7 +668,6 @@ textarea {
 
 .homePage .post {
   height: auto;
-  border-style: none;
 }
 
 .post .postHeader {
