@@ -9,16 +9,20 @@ import AboutVajan from "./pages/AboutVajan";
 import ImageArchive from "./pages/ImageArchive";
 import AlbumDetail from "./pages/AlbumDetail";
 import PrivateRoutes from './pages/PrivateRoutes';
+import Calendar from "./pages/Calendar";
+import AddEvents from "./pages/AddEvents";
 import { useState, useEffect } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "./firebase-config";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';  // Bootstrap JS-bundle med Popper.js
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.js';
+
 import Navigation from './Navigation';
-import facebookLogo from './images/facebook.png';
-import instagramLogo from './images/instagram.png';
-import { NavLink } from "react-router-dom";
+import facebookLogo from './images/Facebook copy.png';
+import instagramLogo from './images/Instagram copy.png';
 
 
 function App() {
@@ -55,6 +59,8 @@ function App() {
             <Route path="/aboutharken" element={<AboutHarken />} />
             <Route path="/aboutvajan" element={<AboutVajan />} />
             <Route path="/albums/:albumName" element={<AlbumDetail />} />
+            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/addevents" element={<PrivateRoutes component={AddEvents} />} />
           </Routes>
         </main>
 
@@ -62,14 +68,14 @@ function App() {
         <div >
         
           <p>Du hittar oss här:</p>
-          <ul className="mt-3">
+          <ul>
             <li>
-              <a className="custom-a py-2 px-2" href="https://www.facebook.com/groups/hbfvajan">
+              <a href="https://www.facebook.com/groups/hbfvajan">
                 <img className="socials-image" src={facebookLogo}></img>
               </a>
             </li>
             <li>
-              <a className="custom-a py-2 px-2" href="https://www.instagram.com/hbf_vajan/">
+              <a href="https://www.instagram.com/hbf_vajan/">
                 <img className="socials-image" src={instagramLogo}></img>
               </a>
             </li>

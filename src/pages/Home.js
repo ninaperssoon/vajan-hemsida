@@ -138,7 +138,7 @@ function Home({ isAuth }) {
 
       <div className="homePage">
         <div className="mb-4 px-lg-5 px-md-2 px-1 py-3">
-          <div className="row px-5">
+          <div className="row px-md-5 ">
             <div className="col-lg-3 col-md-6 ">
               <div className="card info-card p-4 mb-3">
                 <form className="form-inline my-2 my-lg-0">
@@ -151,44 +151,95 @@ function Home({ isAuth }) {
                     onChange={handleSearchChange}
                   />
                 </form>
-                <div className="mt-3">
-                  <h2>Kategorier</h2>
-                  <div className="checkbox-buttons mt-3">
-                    {tags.map((tag) => (
-                      <div key={tag.id}>
-                        <input 
-                          type='checkbox' 
-                          id={tag.id} 
-                          className='checkbox-button' 
-                          checked={selectedTag === tag.id}
-                          onChange={() => handleTagClick(tag.id)} 
-                        />
-                        <label htmlFor={tag.id} className='checkbox-label px-3'>{tag.name}</label>
-                      </div>
-                    ))}
+                <div className="d-none d-md-block">
+                  <div className="mt-3">
+                    <h2>Kategorier</h2>
+                    <div className="checkbox-buttons mt-3">
+                      {tags.map((tag) => (
+                        <div key={tag.id}>
+                          <input 
+                            type='checkbox' 
+                            id={tag.id} 
+                            className='checkbox-button' 
+                            checked={selectedTag === tag.id}
+                            onChange={() => handleTagClick(tag.id)} 
+                          />
+                          <label htmlFor={tag.id} className='checkbox-label px-3'>{tag.name}</label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="mt-3">
+                    <h2>Arkiv</h2>
+                    <div className="archive-menu">
+                      {archiveDates.map((date, index) => (
+                        <button 
+                          key={index} 
+                          onClick={() => handleDateChange(date.month, date.year)}
+                          className={`btn-link mt-2 ${selectedDate.month === date.month && selectedDate.year === date.year ? 'btnn-link-active' : ''}`}
+                        >
+                          {new Date(date.year, date.month - 1).toLocaleString('default', { month: 'long' })} {date.year}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
-                <div className="mt-3">
-                  <h2>Arkiv</h2>
-                  <div className="archive-menu">
-                    {archiveDates.map((date, index) => (
-                      <button 
-                        key={index} 
-                        onClick={() => handleDateChange(date.month, date.year)}
-                        className={`btn-link mt-2 ${selectedDate.month === date.month && selectedDate.year === date.year ? 'btnn-link-active' : ''}`}
-                      >
-                        {new Date(date.year, date.month - 1).toLocaleString('default', { month: 'long' })} {date.year}
-                      </button>
-                    ))}
+                
+                {/* Accordion for smaller screens */}
+                <div className="col-12 d-block d-md-none">
+                  <div className="accordion" id="accordionExample">
+                    <div className="accordion-item">
+                      <h2 className="accordion-header" id="headingOne">
+                        <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                          Filtrera
+                        </button>
+                      </h2>
+                      <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div className="accordion-body">
+                          <div className="mt-3">
+                            <h2>Kategorier</h2>
+                            <div className="checkbox-buttons mt-3">
+                              {tags.map((tag) => (
+                                <div key={tag.id}>
+                                  <input 
+                                    type='checkbox' 
+                                    id={tag.id} 
+                                    className='checkbox-button' 
+                                    checked={selectedTag === tag.id}
+                                    onChange={() => handleTagClick(tag.id)} 
+                                  />
+                                  <label htmlFor={tag.id} className='checkbox-label px-3'>{tag.name}</label>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                          <div className="mt-3">
+                            <h2>Arkiv</h2>
+                            <div className="archive-menu">
+                              {archiveDates.map((date, index) => (
+                                <button 
+                                  key={index} 
+                                  onClick={() => handleDateChange(date.month, date.year)}
+                                  className={`btn-link mt-2 ${selectedDate.month === date.month && selectedDate.year === date.year ? 'btnn-link-active' : ''}`}
+                                >
+                                  {new Date(date.year, date.month - 1).toLocaleString('default', { month: 'long' })} {date.year}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+
             <div className="col-lg-9 col-md-6">
             {filteredPosts.length > 0 ? (
                 filteredPosts.map((post) => (
                   <div key={post.id}>
-                    <div className="post p-4">
+                    <div className="post p-3 p-md-5">
                       <div className="postHeader">
                         <div className="title">
                           <h2>{post.title}</h2>
@@ -207,9 +258,6 @@ function Home({ isAuth }) {
                         <p className="mt-3">Vaj vaj, {post.author.name}</p>
                         <hr></hr>
                         <div className="align-items-center d-flex">
-                          <div className="mx-2">
-                            <span>Taggar:</span>
-                          </div>
                           <div className="checkbox-buttons">
                             {post.selectedTags && getTagNames(post.selectedTags).map((tagName, index) => (
                               <div key={index} className="checkbox-label px-3">

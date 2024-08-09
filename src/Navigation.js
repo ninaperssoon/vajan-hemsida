@@ -3,9 +3,10 @@ import logoRed from './images/logoRed.png';
 
 const Navigation = ({ isAuth, signUserOut }) => {
   const location = useLocation();
+  console.log(location)
 
   const isAboutActive = location.pathname.startsWith('/aboutvajan') || location.pathname.startsWith('/aboutharken');
-
+console.log(isAboutActive)
   return (
     <nav className="navbar navbar-default navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
@@ -36,8 +37,14 @@ const Navigation = ({ isAuth, signUserOut }) => {
             </li>
 
             <li className="nav-item">
+              <NavLink className="nav-link" to="/calendar" activeClassName="active">Kalendarium</NavLink>
+            </li>
+
+            <li className="nav-item">
               <NavLink className="nav-link" to="/contact" activeClassName="active">Kontakt</NavLink>
             </li>
+
+            
 
             {!isAuth ? (
               console.log( )
@@ -48,6 +55,9 @@ const Navigation = ({ isAuth, signUserOut }) => {
                 </li>
                 <li className="nav-item">
                   <NavLink className="nav-link" to="/uploadimages" activeClassName="active">Ladda upp bilder</NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/addevents" activeClassName="active">Lägg till event</NavLink>
                 </li>
                 <button className="btn btn-primary" onClick={signUserOut}> Logga ut </button>
               </>

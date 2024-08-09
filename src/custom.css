@@ -23,6 +23,7 @@
   --primary-border-color: #898989;
 }
 
+
 h1 {
   font-size: 42px;
   color: var(--light-text-color);
@@ -48,6 +49,17 @@ h3 {
   border-width: 0.2em;
   border-color: var(--pill-focus-color);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+.accordion-item {
+  border-radius: 10em;
+}
+.accordion-button:active {
+  background-color: blue;
+}
+
+.accordion-button:focus {
+  background-color: var(--bg-secondary);
+  box-shadow: none;
 }
 
 .date {
@@ -258,12 +270,15 @@ body {
 }
 
 .socials-image {
-  height: 1.5em;
-  width: 1.5em;
-  margin-top: -5px;
+  height: 2em;
+  width: 2em;
 }
 
-.custom-a {
+.socials-image:hover {
+  cursor: pointer;
+}
+
+/* .custom-a {
   margin: 0;
   border-radius: 50%;
   border-style: solid;
@@ -277,7 +292,7 @@ body {
 .custom-a:hover {
   background-color: var(--pill-hover-color);
   transform: scale(1.05); 
-}
+} */
 
 
 .album-container {
@@ -701,4 +716,11 @@ textarea {
   width: 100%;
   overflow: hidden;
   overflow-y: auto;
+}
+
+/* Calendar */
+.pill {
+  border: 0.25em solid var(--pill-border-color);
+  border-radius: 2em;
+  background-color: var(--pill-primary);
 }
