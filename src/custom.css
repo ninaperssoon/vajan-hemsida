@@ -338,6 +338,7 @@ body {
   height: 270px; /* Fast höjd för alla albumdivar */
   width: 100%;
   transition: all .2s ease-in-out;
+  font-size: small;
 }
 
 
