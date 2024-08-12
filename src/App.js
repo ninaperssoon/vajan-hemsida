@@ -16,9 +16,8 @@ import { signOut } from "firebase/auth";
 import { auth } from "./firebase-config";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';  // Bootstrap JS-bundle med Popper.js
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import Navigation from './Navigation';
 import facebookLogo from './images/Facebook copy.png';

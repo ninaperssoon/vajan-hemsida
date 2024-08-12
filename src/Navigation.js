@@ -3,10 +3,9 @@ import logoRed from './images/logoRed.png';
 
 const Navigation = ({ isAuth, signUserOut }) => {
   const location = useLocation();
-  console.log(location)
 
   const isAboutActive = location.pathname.startsWith('/aboutvajan') || location.pathname.startsWith('/aboutharken');
-console.log(isAboutActive)
+
   return (
     <nav className="navbar navbar-default navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
@@ -23,7 +22,7 @@ console.log(isAboutActive)
             </li>
 
             <li className={`nav-item dropdown nav-link-dropdown ${isAboutActive ? 'active' : ''}`}>
-              <span className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <span className={`nav-link dropdown-toggle ${isAboutActive ? 'active' : ''}`} id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Om oss
               </span>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -43,8 +42,6 @@ console.log(isAboutActive)
             <li className="nav-item">
               <NavLink className="nav-link" to="/contact" activeClassName="active">Kontakt</NavLink>
             </li>
-
-            
 
             {!isAuth ? (
               console.log( )

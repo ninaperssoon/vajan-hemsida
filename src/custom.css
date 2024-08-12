@@ -21,6 +21,18 @@
   --pill-focus-color: #FEC21F;
   --pill-hover-color: #FEC21F;
   --primary-border-color: #898989;
+  --bg-date: #D9D9D9;
+  --date-border: #9C9C9C;
+  --calendar-bg-primary: #C22D2D;
+  --calendar-border-primary: #8D1414;
+  --calendar-bg-secondary: #A670FD;
+  --calendar-border-secondary: #6A33C2;
+  --calendar-bg-tertiary: #FFA878;
+  --calendar-border-tertiary: #B66C42;
+  --calendar-bg-quaternary: #73C4FF;
+  --calendar-border-quaternary: #2A8FD8;
+  --calendar-bg-quinary: #FF90E7;
+  --calendar-border-quinary: #D167BA;
 }
 
 
@@ -723,4 +735,117 @@ textarea {
   border: 0.25em solid var(--pill-border-color);
   border-radius: 2em;
   background-color: var(--pill-primary);
+}
+
+.calendar-container {
+  background-color: var(--bg-light);
+  border-radius: 1em;
+  padding: 2em;
+}
+
+.calendar {
+  width: 100%;
+  /* max-width: 600px; */
+  margin: 0 auto;
+}
+
+.calendar h3 {
+  color: var(--default-link-color);
+  font-weight: bold;
+}
+
+.month-nav {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  margin-bottom: 10px;
+  color: var(--default-link-color);
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.day-header {
+  font-weight: bold;
+  text-align: center;
+  background-color: transparent;
+  padding: 10px;
+  color: var(--default-link-color);
+}
+
+.day-box {
+  border: 1px solid #ddd;
+  text-align: center;
+  background-color: transparent;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  width: 10em;
+  height: 6.5em;
+  justify-content: space-between;
+}
+
+.day-box.empty {
+  background-color: transparent;
+  border: none;
+}
+
+.day-date {
+  background-color: var(--bg-date);
+  border-color: var(--date-border);
+  font-size: small;
+  border-radius: 2em;
+  display: flex;
+  justify-content: center;
+  padding: 0.2em;
+}
+
+.month-btn {
+  color: var(--default-link-color);
+  background-color: transparent;
+  border-style: none;
+  font-size: xx-large;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.event-type-vajans {
+  background-color: var(--calendar-bg-primary);
+  border-color: var(--calendar-border-primary);
+}
+
+.event-type-samsittning {
+  background-color: var(--calendar-bg-secondary);
+  border-color: var(--calendar-border-secondary);
+}
+
+.event-type-nationen {
+  background-color: var(--calendar-bg-tertiary);
+  border-color: var(--calendar-border-tertiary);
+}
+
+.event-type-andra {
+  background-color: var(--calendar-bg-quaternary);
+  border-color: var(--calendar-border-quaternary);
+}
+
+.event-type-special {
+  background-color: var(--calendar-bg-quinary);
+  border-color: var(--calendar-border-quinary);
+}
+
+.event-name {
+  padding: 5px;
+  border-radius: 0.7em;
+  margin-top: 5px;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  border-width: 0.2em;
+  font-size: small;
+  border-style: solid;
 }
