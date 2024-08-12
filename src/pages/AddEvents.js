@@ -33,6 +33,11 @@ function AddEvents() {
     setEventType('Typ av event');
   };
 
+  const handleDeleteEvent = (index) => {
+    const updatedEvents = events.filter((_, i) => i !== index);
+    setEvents(updatedEvents);
+  };
+
   const handleUpload = async () => {
     if (events.length < 1) {
       alert('Vänligen lägg till ett event.');
@@ -70,10 +75,10 @@ function AddEvents() {
 
   return (
     <div className='createPostPage my-3'>
-      <div className='cpContainer'>
+      <div className='create-container aeContainer'>
         <h2>Skapa event</h2>
         <div className='inputGp'>
-          <label className='cp-label'>Eventnamn:</label>
+          <label className='create-label'>Eventnamn:</label>
           <input 
             placeholder='Titel...' 
             value={eventTitle}
@@ -81,7 +86,7 @@ function AddEvents() {
           />
         </div>
         <div className='inputGp'>
-          <label className='cp-label'>Datum:</label>
+          <label className='create-label'>Datum:</label>
           <input 
             type="date" 
             value={eventDate || ''} // Hantera null-värde för eventDate
@@ -112,18 +117,25 @@ function AddEvents() {
                 Special event
               </Dropdown.Item>
             </Dropdown.Menu>
+
           </Dropdown>
         </div>
         
         <button onClick={handleAddEvent}>Lägg till</button>
         <button onClick={handleUpload}>Publicera</button>
       </div>
-      <div className='eventList'>
+      <div className='event-list p-2 my-2'>
         <h3>Eventlista</h3>
         <ul>
           {events.map((event, index) => (
             <li key={index}>
               {event.title} - {event.date} - {event.type}
+              <button 
+                onClick={() => handleDeleteEvent(index)} 
+                className='btn btn-danger btn-sm mx-2 remove-btn'
+              >
+                X
+              </button>
             </li>
           ))}
         </ul>

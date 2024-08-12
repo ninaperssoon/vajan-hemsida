@@ -75,10 +75,10 @@ function CreatePost() {
 
   return (
     <div className='createPostPage my-3'>
-      <div className='cpContainer'>
+      <div className='create-container container-md'>
         <h2>Skapa nytt inlägg</h2>
         <div className='inputGp'>
-          <label className='cp-label'>Titel:</label>
+          <label className='create-label'>Titel:</label>
           <input 
             placeholder='Titel...' 
             onChange={(event) => { 
@@ -87,7 +87,7 @@ function CreatePost() {
           />
         </div>
         <div className='inputGp'>
-          <label className='cp-label'>Inlägg:</label>
+          <label className='create-label'>Inlägg:</label>
           <textarea 
             placeholder='Skriv ditt inlägg här' 
             onChange={(event) => {
@@ -96,7 +96,7 @@ function CreatePost() {
           />
         </div>
         <div className='inputGp'>
-          <label className='cp-label'>Ladda upp bild:</label>
+          <label className='create-label'>Ladda upp bild:</label>
           <input 
             type='file'
             onChange={(event) => {
@@ -105,7 +105,7 @@ function CreatePost() {
           />
         </div>
         <div className='inputGp'>
-          <label className='cp-label mb-2'>Taggar:</label>
+          <label className='create-label mb-2'>Taggar:</label>
           <div className='checkbox-buttons'>
             {tags.map((tag) => (
               <div>

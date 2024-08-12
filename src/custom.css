@@ -545,7 +545,7 @@ a {
   place-items: center;
 }
 
-.cpContainer {
+.create-container {
   width: 500px;
   height: auto;
   padding: 20px;
@@ -555,14 +555,21 @@ a {
   flex-direction: column;
 }
 
-.cpContainer h1 {
+@media (max-width: 768px) {
+  .create-container {
+    width: 90%;
+  }
+
+}
+
+.create-container h1 {
   text-align: center;
 }
 
-.cp-label {
+.create-label {
   font-size: 25px;
 }
-.cpContainer .inputGp {
+.create-container .inputGp {
   margin-top: 30px;
   display: flex;
   flex-direction: column;
@@ -584,7 +591,7 @@ a {
   border-color: var(--primary-border-color);
 }
 
-.cpContainer button {
+.create-container button {
   margin-top: 20px;
   height: 40px;
   border: none;
@@ -848,4 +855,30 @@ textarea {
   border-width: 0.2em;
   font-size: small;
   border-style: solid;
+}
+
+.remove-btn {
+  font-size: xx-small;
+}
+
+.aeContainer {
+  height: auto;
+  padding: 20px;
+  background-color: var(--bg-light);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.event-list {
+  background-color: var(--bg-light);
+  border-radius: 1em;
+}
+
+.event-list h3 {
+  color: var(--default-link-color)
+}
+
+.upload-images-page {
+  background-color: var(--bg-light);
 }

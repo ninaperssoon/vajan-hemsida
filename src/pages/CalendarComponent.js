@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { getDocs, collection, deleteDoc, doc, query, orderBy } from "firebase/firestore";
+import { getDocs, collection, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase-config";
-import { stringify } from 'uuid';
 
-
-function CalendarComponent({ initialYear }) {
+function CalendarComponent({ initialYear, isAuth }) {
 
     function generateCalendar(year) {
         const months = [
@@ -37,7 +35,7 @@ function CalendarComponent({ initialYear }) {
         }
       
         return calendar;
-      }
+    };
     
     const [currentYear, setCurrentYear] = useState(initialYear);
     const [currentMonthIndex, setCurrentMonthIndex] = useState(new Date().getMonth());
@@ -45,7 +43,6 @@ function CalendarComponent({ initialYear }) {
     const months = generateCalendar(currentYear);
     const currentMonthData = months[currentMonthIndex];
     const [events, setEvents] = useState([]);
-
 
     const handlePrevMonth = () => {
         if (currentMonthIndex === 0) {
@@ -89,6 +86,19 @@ function CalendarComponent({ initialYear }) {
         }));
     
         setEvents(eventsData);
+    };
+
+    // Funktion för att hantera borttagning av ett event
+    const deleteEvent = async (eventId) => {
+        try {
+            const monthYear = `${currentYear}-${String(currentMonthIndex + 1).padStart(2, '0')}`;
+            const eventRef = doc(db, 'events', monthYear, 'eventList', eventId);
+            await deleteDoc(eventRef);
+            // Uppdatera eventlistan efter borttagningen
+            setEvents(prevEvents => prevEvents.filter(event => event.id !== eventId));
+        } catch (error) {
+            console.error("Error removing document: ", error);
+        }
     };
     
     useEffect(() => {
@@ -150,6 +160,14 @@ function CalendarComponent({ initialYear }) {
                                     return (
                                         <div key={event.id} className={`event-name ${eventClass}`}>
                                             {event.title}
+                                            {isAuth && (
+                                                <button
+                                                    className='btn btn-danger btn-sm mx-1 remove-btn'
+                                                    onClick={() => deleteEvent(event.id)}
+                                                >
+                                                    X
+                                                </button>
+                                            )}
                                         </div>
                                     );
                                 })}

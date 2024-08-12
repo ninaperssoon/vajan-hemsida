@@ -1,16 +1,14 @@
 import CalendarComponent from "./CalendarComponent";
 
-function Calendar () {
+function Calendar ({isAuth}) {
 
     const currentYear = new Date().getFullYear();
 
     return (
         <div className="image-archive-page">
-            {/* <div>
-                <h1>Kalendarium</h1>
-            </div> */}
+            
             <div className="calendar-container">
-                <CalendarComponent initialYear={currentYear} />
+                <CalendarComponent initialYear={currentYear} isAuth={isAuth} />
 
             </div>
         </div>

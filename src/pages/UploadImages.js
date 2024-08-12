@@ -44,20 +44,26 @@ function UploadImages() {
     const imageListRef = ref(storage, `${albumTitle}/`);
 
     const uploadImages = () => {
-        if (imageUploads.length === 0) return;
-        if (existingAlbums.includes(albumTitle)) {
-            alert("Album name already exists. Please choose a different name.");
-            return;
-        };
-        Array.from(imageUploads).forEach((imageUpload) => {
-            const imageRef = ref(storage, `albums/${albumTitle}/${imageUpload.name + v4()}`)
-            uploadBytes(imageRef, imageUpload).then((snapshot) => {
-                getDownloadURL(snapshot.ref).then((url) => {
-                    setImageList((prev) => [...prev, url]);
+        try {
+            if (imageUploads.length === 0) return;
+            if (existingAlbums.includes(albumTitle)) {
+                alert("Album name already exists. Please choose a different name.");
+                return;
+            };
+            Array.from(imageUploads).forEach((imageUpload) => {
+                const imageRef = ref(storage, `albums/${albumTitle}/${imageUpload.name + v4()}`)
+                uploadBytes(imageRef, imageUpload).then((snapshot) => {
+                    getDownloadURL(snapshot.ref).then((url) => {
+                        setImageList((prev) => [...prev, url]);
+                    })
                 })
             })
-        })
-        
+            alert('Uppladdningen lyckades')
+            navigate("/")
+        }
+        catch {
+            alert('Uppladdningen misslyckades')
+        }
     };
 
     useEffect(() => {
@@ -71,26 +77,26 @@ function UploadImages() {
     }, []);
 
     return (
-        <div>
-            <p> Döp albumet:</p>
-            <input
-                onChange={(event) => { 
-                    setAlbumTitle(event.target.value);
-                }}
-            ></input>
-            <input 
-                type="file" 
-                onChange={(event) => {
-                    setImageUploads(event.target.files);
-                }}
-                multiple
-            />
-            <button onClick={uploadImages}> Upload Image </button>
+        <div className="createPostPage my-3">
+            <div className="create-container">
+                <h2>Döp albumet:</h2>
+                <input
+                    onChange={(event) => { 
+                        setAlbumTitle(event.target.value);
+                    }}
+                ></input>
+                <input 
+                    type="file" 
+                    onChange={(event) => {
+                        setImageUploads(event.target.files);
+                    }}
+                    multiple
+                />
+                <button onClick={uploadImages}> Ladda upp bilder </button>
 
-            {imageList.map((url, index) => {
-                return <img key={index} src={url} />
-            })}
+            </div>
         </div>
+        
     );
 };
 

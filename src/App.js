@@ -58,7 +58,7 @@ function App() {
             <Route path="/aboutharken" element={<AboutHarken />} />
             <Route path="/aboutvajan" element={<AboutVajan />} />
             <Route path="/albums/:albumName" element={<AlbumDetail />} />
-            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/calendar" element={<Calendar isAuth={isAuth}/>} />
             <Route path="/addevents" element={<PrivateRoutes component={AddEvents} />} />
           </Routes>
         </main>
