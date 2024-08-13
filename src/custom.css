@@ -757,6 +757,8 @@ textarea {
   margin: 0 auto;
 }
 
+
+
 .calendar h3 {
   color: var(--default-link-color);
   font-weight: bold;
@@ -780,7 +782,6 @@ textarea {
   font-weight: bold;
   text-align: center;
   background-color: transparent;
-  padding: 10px;
   color: var(--default-link-color);
 }
 
@@ -792,9 +793,94 @@ textarea {
   display: flex;
   flex-direction: column;
   width: 10em;
-  height: 6.5em;
+  height: 6em;
   justify-content: space-between;
 }
+
+@media (max-width: 1200px) {
+  .day-box {
+    width: 100%;
+    max-width: 10em;
+  }
+}
+
+.event-details-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.event-details-content {
+  background: #fff;
+  width: 40%;
+  padding: 0.5em;
+  border-radius: 10px;
+  text-align: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .calendar-container {
+    padding: 0.2em;
+    max-width: fit-content;
+    width: 100%;
+  }
+
+  .day-box {
+    width: 100%;
+    height: auto;
+    display: block; /* Gör om till block för att vara i en kolumn */
+    border-style: none;
+    justify-content: center;
+  }
+  
+  /* Döljer innehållet i boxen förutom datumet */
+  .day-box .event-name {
+    display: none;
+  }
+
+  /* Gör datumet synligt och centrera det */
+  .day-box .day-date {
+    font-size: small;
+    font-weight: bold;
+    padding: 1em;
+    border-width: 0.1em;
+  }
+
+   /* Döljer veckodagarna */
+  .day-header {
+    display: none;
+  }
+
+  .month-nav h3 {
+    text-align: center;
+  }
+
+  .event-details-content {
+    width: 70%;
+  }
+ 
+}
+
+@media (max-width: 440px) {
+  .days-grid {
+    gap: 1px
+  }
+  .day-box .day-date {
+    font-size: xx-small;
+  }
+  .calendar-container {
+    padding: 0.1em;
+  }
+}
+
+
 
 .day-box.empty {
   background-color: transparent;
@@ -804,11 +890,13 @@ textarea {
 .day-date {
   background-color: var(--bg-date);
   border-color: var(--date-border);
+  border-style: solid;
   font-size: small;
   border-radius: 2em;
+  border-width: 0.12em;
   display: flex;
   justify-content: center;
-  padding: 0.2em;
+  padding: 0.1em;
 }
 
 .month-btn {
@@ -824,26 +912,40 @@ textarea {
 .event-type-vajans {
   background-color: var(--calendar-bg-primary);
   border-color: var(--calendar-border-primary);
+  color: var(--light-text-color);
+  cursor: pointer;
+
 }
 
 .event-type-samsittning {
   background-color: var(--calendar-bg-secondary);
   border-color: var(--calendar-border-secondary);
+  color: var(--light-text-color);
+  cursor: pointer;
+  
 }
 
 .event-type-nationen {
   background-color: var(--calendar-bg-tertiary);
   border-color: var(--calendar-border-tertiary);
+  color: var(--light-text-color);
+  cursor: pointer;
 }
 
 .event-type-andra {
   background-color: var(--calendar-bg-quaternary);
   border-color: var(--calendar-border-quaternary);
+  color: var(--light-text-color);
+  cursor: pointer;
+
 }
 
 .event-type-special {
   background-color: var(--calendar-bg-quinary);
   border-color: var(--calendar-border-quinary);
+  color: var(--light-text-color);
+  cursor: pointer;
+
 }
 
 .event-name {

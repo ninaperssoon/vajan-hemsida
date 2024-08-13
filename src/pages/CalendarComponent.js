@@ -39,6 +39,7 @@ function CalendarComponent({ initialYear, isAuth }) {
     
     const [currentYear, setCurrentYear] = useState(initialYear);
     const [currentMonthIndex, setCurrentMonthIndex] = useState(new Date().getMonth());
+    const [selectedDay, setSelectedDay] = useState(null);
 
     const months = generateCalendar(currentYear);
     const currentMonthData = months[currentMonthIndex];
@@ -104,10 +105,10 @@ function CalendarComponent({ initialYear, isAuth }) {
     useEffect(() => {
         getEvents();
     }, [currentMonthIndex, currentYear]); // Ladda om eventen när månad eller år ändras
-    
 
+    
     return (
-        <div className='calendar'>
+        <div className='calendar container-sm'>
             <div className='month-nav'>
                 <button onClick={handlePrevMonth} className='month-btn'>&#8249;</button>
                 <h3 className='mx-3'>{currentMonthData.name} {currentYear}</h3>
@@ -125,57 +126,87 @@ function CalendarComponent({ initialYear, isAuth }) {
                 ))}
     
                 {currentMonthData.days.map((day, dayIndex) => {
-                    const dayEvents = events.filter(event => new Date(event.date).getDate() === day.date);
-    
-                    return (
-                        <div key={dayIndex} className='day-box px-3 py-2'>
-                            <div className='justify-content-end row'>
-                                <div className='day-date col-2'>
-                                    {day.date}
-                                </div>
-                            </div>
-                            <div className='row'>
-                                {dayEvents.map(event => {
-                                    let eventClass = '';
-                                    switch (event.type) {
-                                        case 'Vajans egna event':
-                                            eventClass = 'event-type-vajans';
-                                            break;
-                                        case 'Samsittning':
-                                            eventClass = 'event-type-samsittning';
-                                            break;
-                                        case 'Nationens event':
-                                            eventClass = 'event-type-nationen';
-                                            break;
-                                        case 'Andra föreningars event':
-                                            eventClass = 'event-type-andra';
-                                            break;
-                                        case 'Special event':
-                                            eventClass = 'event-type-special';
-                                            break;
-                                        default:
-                                            eventClass = '';
-                                    }
-    
-                                    return (
-                                        <div key={event.id} className={`event-name ${eventClass}`}>
-                                            {event.title}
-                                            {isAuth && (
-                                                <button
-                                                    className='btn btn-danger btn-sm mx-1 remove-btn'
-                                                    onClick={() => deleteEvent(event.id)}
-                                                >
-                                                    X
-                                                </button>
-                                            )}
-                                        </div>
-                                    );
-                                })}
+                const dayEvents = events.filter(event => new Date(event.date).getDate() === day.date);
+
+                // Bestäm färgen baserat på det första eventet för dagen
+                let eventClass = '';
+                if (dayEvents.length > 0) {
+                    switch (dayEvents[0].type) { // Hanterar färg utifrån det första eventet
+                        case 'Vajans egna event':
+                            eventClass = 'event-type-vajans'; 
+                            break;
+                        case 'Samsittning':
+                            eventClass = 'event-type-samsittning';
+                            break;
+                        case 'Nationens event':
+                            eventClass = 'event-type-nationen';
+                            break;
+                        case 'Andra föreningars event':
+                            eventClass = 'event-type-andra';
+                            break;
+                        case 'Special event':
+                            eventClass = 'event-type-special';
+                            break;
+                        default:
+                            eventClass = '';
+                        
+                    }
+                }
+
+                const handleDayClick = () => {
+                    if (dayEvents.length > 0) {
+                        setSelectedDay(day);
+                    }
+                };
+
+                return (
+                    <div key={dayIndex} className='day-box px-3 py-2' onClick={handleDayClick}>
+                        <div className='justify-content-end row'>
+                            <div className={`day-date col-md-2 ${eventClass}`}>
+                                {day.date}
                             </div>
                         </div>
-                    );
-                })}
+                        <div className='row'>
+                            {dayEvents.map(event => (
+                                <div key={event.id} className={`event-name ${eventClass}`}>
+                                    {event.title}
+                                    {isAuth && (
+                                        <button
+                                            className='btn btn-danger btn-sm mx-1 remove-btn'
+                                            onClick={() => deleteEvent(event.id)}
+                                        >
+                                            X
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                );
+            })}
             </div>
+            {selectedDay && (
+                <div className="event-details-modal">
+                    <div className="event-details-content">
+                        <div className='justify-content-end d-flex'>
+                            <button onClick={() => setSelectedDay(null)} className='btn'>X</button>
+                        </div>
+
+                        <h4>{selectedDay.date}/{currentMonthIndex + 1}/{currentYear}</h4>
+                            {events
+                                .filter(event => new Date(event.date).getDate() === selectedDay.date)
+                                .map(event => (
+                                    
+                                    <div className='p-3'>
+                                        <h2>
+                                            {event.title}
+                                        </h2>
+                                    </div>
+                                    
+                            ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
     
