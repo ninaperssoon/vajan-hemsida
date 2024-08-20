@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
 
 /* COLOR VARIABLES */
 
@@ -101,12 +103,14 @@ h3 {
 .hero-image {
   position: relative;
   width: 100%;
-  height: 500px; /* Justera höjden efter behov */
+  height: 600px; /* Justera höjden efter behov */
   background-image: url('./images/vårbal_2024.jpg');
   background-size: cover;
   background-position: center;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .hero-text {
@@ -119,21 +123,25 @@ h3 {
   padding: 20px;
   border-radius: 10px;
   white-space: nowrap;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-
+  /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); */
 }
 
 .hero-title {
-  font-size: 4em;
-  font-family: 'Inter', sans-serif;
-  font-weight: 900;
+  font-size: 5em;
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 @media (max-width: 768px) {
   .hero-title {
-    font-size: 3em;
+    font-size: 2.5em;
     white-space: wrap;
     line-height: 1.6em;
+  }
+
+  .hero-image {
+    height: 400px;
   }
 
   .container {
@@ -218,7 +226,7 @@ body {
 .info-card {
   border-style: none;
   position: sticky;
-  top: 20px; /* Adjust as needed */
+  top: 6em; /* Adjust as needed */
   background-color: var(--bg-light);
   border-radius: 1em;
   border: 0.1em solid #ddd;
@@ -984,4 +992,22 @@ textarea {
 
 .upload-images-page {
   background-color: var(--bg-light);
+}
+
+.board-info-container {
+  background-color: var(--bg-light);
+  border-radius: 1em;
+}
+
+.board-info-text {
+  font-weight: lighter;
+}
+
+.board-info-logo {
+  width: 150px;
+}
+@media (max-width: 575px) {
+  .board-info-logo {
+    display: none;
+  }
 }

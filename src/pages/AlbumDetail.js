@@ -91,7 +91,7 @@ function AlbumDetail() {
 
       {currentIndex !== null && (
         <div className="overlay">
-          <button className="close-button" onClick={closeOverlay}>×</button>
+          <button className="close-button mt-5" onClick={closeOverlay}>×</button>
           <button className="prev-button" onClick={showPreviousPhoto}>←</button>
           <img src={photos[currentIndex]} alt={`Photo ${currentIndex + 1}`} className="overlay-image" />
           <button className="next-button" onClick={showNextPhoto}>→</button>

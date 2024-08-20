@@ -7,7 +7,7 @@ const Navigation = ({ isAuth, signUserOut }) => {
   const isAboutActive = location.pathname.startsWith('/aboutvajan') || location.pathname.startsWith('/aboutharken');
 
   return (
-    <nav className="navbar navbar-default navbar-expand-lg navbar-light bg-light">
+    <nav className="navbar navbar-default navbar-expand-lg navbar-light bg-light sticky-top">
       <div className="container-fluid">
         <NavLink className="navbar-brand" to="/">
           <img src={logoRed} alt="Logo" width="50" height="50"></img>
@@ -29,6 +29,10 @@ const Navigation = ({ isAuth, signUserOut }) => {
                 <li><NavLink className="dropdown-item" to="/aboutvajan" activeClassName="active">Om Vajan</NavLink></li>
                 <li><NavLink className="dropdown-item" to="/aboutharken" activeClassName="active">Härken</NavLink></li>
               </ul>
+            </li>
+
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/boardinfo" activeClassName="active">Styrelsen</NavLink>
             </li>
 
             <li className="nav-item">
