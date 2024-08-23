@@ -1,30 +1,47 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import { useParams } from 'react-router-dom';
+import { useInView } from 'react-intersection-observer';
 
 function AlbumDetail() {
   const { albumName } = useParams();
   const [photos, setPhotos] = useState([]);
+  const [loadedPhotos, setLoadedPhotos] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(null);
+  const { ref: observerRef, inView } = useInView({
+    threshold: 1,
+    triggerOnce: false
+  });
+
+  const fetchPhotos = useCallback(async (startIndex, limit) => {
+    const storage = getStorage();
+    const albumRef = ref(storage, `albums/${albumName}`);
+    const albumImages = await listAll(albumRef);
+
+    const photosData = await Promise.all(
+      albumImages.items.slice(startIndex, startIndex + limit).map(async (itemRef) => {
+        const photoUrl = await getDownloadURL(itemRef);
+        return photoUrl;
+      })
+    );
+
+    if (photosData.length < limit) {
+      setHasMore(false);
+    }
+
+    setLoadedPhotos((prev) => [...prev, ...photosData]);
+  }, [albumName]);
 
   useEffect(() => {
-    const fetchPhotos = async () => {
-      const storage = getStorage();
-      const albumRef = ref(storage, `albums/${albumName}`);
-      const albumImages = await listAll(albumRef);
+    fetchPhotos(0, 20);
+  }, [fetchPhotos]);
 
-      const photosData = await Promise.all(
-        albumImages.items.map(async (itemRef) => {
-          const photoUrl = await getDownloadURL(itemRef);
-          return photoUrl;
-        })
-      );
-
-      setPhotos(photosData);
-    };
-
-    fetchPhotos();
-  }, [albumName]);
+  useEffect(() => {
+    if (inView && hasMore) {
+      fetchPhotos(loadedPhotos.length, 20);
+    }
+  }, [inView, hasMore, fetchPhotos, loadedPhotos.length]);
 
   const openOverlay = (index) => {
     setCurrentIndex(index);
@@ -35,11 +52,11 @@ function AlbumDetail() {
   };
 
   const showNextPhoto = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % photos.length);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % loadedPhotos.length);
   };
 
   const showPreviousPhoto = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + photos.length) % photos.length);
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + loadedPhotos.length) % loadedPhotos.length);
   };
 
   useEffect(() => {
@@ -76,7 +93,7 @@ function AlbumDetail() {
         </div>
         
         <div className="photos-list mb-5">
-          {photos.map((photoUrl, index) => (
+          {loadedPhotos.map((photoUrl, index) => (
             <div className="photo" key={index}>
               <img 
                 src={photoUrl} 
@@ -87,13 +104,20 @@ function AlbumDetail() {
             </div>
           ))}
         </div>
+        
+        {/* Observer för att ladda fler bilder */}
+        {hasMore && (
+          <div ref={observerRef} className="loading-indicator">
+            Laddar fler bilder...
+          </div>
+        )}
       </div>
 
       {currentIndex !== null && (
         <div className="overlay">
           <button className="close-button mt-5" onClick={closeOverlay}>×</button>
           <button className="prev-button" onClick={showPreviousPhoto}>←</button>
-          <img src={photos[currentIndex]} alt={`Photo ${currentIndex + 1}`} className="overlay-image" />
+          <img src={loadedPhotos[currentIndex]} alt={`Photo ${currentIndex + 1}`} className="overlay-image mt-5" />
           <button className="next-button" onClick={showNextPhoto}>→</button>
         </div>
       )}

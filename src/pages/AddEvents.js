@@ -124,7 +124,7 @@ function AddEvents() {
         <button onClick={handleAddEvent}>Lägg till</button>
         <button onClick={handleUpload}>Publicera</button>
       </div>
-      <div className='event-list p-2 my-2'>
+      <div className='event-list create-container aeContainer p-2 my-2'>
         <h3>Eventlista</h3>
         <ul>
           {events.map((event, index) => (

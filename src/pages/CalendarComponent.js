@@ -108,7 +108,7 @@ function CalendarComponent({ initialYear, isAuth }) {
 
     
     return (
-        <div className='calendar container-sm'>
+        <div className='calendar'>
             <div className='month-nav'>
                 <button onClick={handlePrevMonth} className='month-btn'>&#8249;</button>
                 <h3 className='mx-3'>{currentMonthData.name} {currentYear}</h3>
@@ -160,7 +160,7 @@ function CalendarComponent({ initialYear, isAuth }) {
                 };
 
                 return (
-                    <div key={dayIndex} className='day-box px-3 py-2' onClick={handleDayClick}>
+                    <div key={dayIndex} className='day-box px-md-3 py-md-2' onClick={handleDayClick}>
                         <div className='justify-content-end row'>
                             <div className={`day-date col-md-2 ${eventClass}`}>
                                 {day.date}

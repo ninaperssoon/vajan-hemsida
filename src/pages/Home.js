@@ -256,7 +256,9 @@ function Home({ isAuth }) {
                       </div>
                       <div className="postTextContainer preformatted-text">{post.postText}</div>
                         {post.imageUrl && <img src={post.imageUrl} alt="Post" />}
-                        <p className="mt-3">Vaj vaj, {post.author.name}</p>
+                        <p className="mt-3">Vaj vaj!</p>
+                        <p>{post.author.name}</p>
+
                         <hr></hr>
                         <div className="align-items-center d-flex">
                           <div className="checkbox-buttons">

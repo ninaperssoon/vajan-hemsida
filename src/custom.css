@@ -2,7 +2,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
 
-
 /* COLOR VARIABLES */
 
 :root {
@@ -107,10 +106,10 @@ h3 {
   background-image: url('./images/vårbal_2024.jpg');
   background-size: cover;
   background-position: center;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
+  z-index: 1;
 }
 
 .hero-text {
@@ -123,7 +122,6 @@ h3 {
   padding: 20px;
   border-radius: 10px;
   white-space: nowrap;
-  /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); */
 }
 
 .hero-title {
@@ -141,7 +139,9 @@ h3 {
   }
 
   .hero-image {
-    height: 400px;
+    height: 300px;
+    background-attachment: scroll;
+
   }
 
   .container {
@@ -322,12 +322,11 @@ body {
 }
 
 .image-archive-page {
-  padding: 20px;
+  padding: 2em;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
 
 .album-list {
   display: grid;
@@ -410,6 +409,8 @@ body {
 
 .photo-image {
   height: 100%;
+  object-fit: cover; /* eller contain */
+
 }
 
 .harken-image {
@@ -707,6 +708,10 @@ textarea {
   flex-direction: column;
   align-items: center;
   padding-top: 1em;
+  box-shadow: 0 -4px 4px rgba(87, 36, 36, 0.5) ; /* Skugga uppåt */
+  z-index: 2; /* Se till att homePage ligger ovanpå hero-image */
+  position: relative; /* Gör positionen relativ så z-index fungerar */
+
 }
 
 .homePage .post {
@@ -753,6 +758,14 @@ textarea {
   background-color: var(--pill-primary);
 }
 
+.calendar-page {
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
 .calendar-container {
   background-color: var(--bg-light);
   border-radius: 1em;
@@ -764,8 +777,6 @@ textarea {
   /* max-width: 600px; */
   margin: 0 auto;
 }
-
-
 
 .calendar h3 {
   color: var(--default-link-color);
@@ -805,6 +816,18 @@ textarea {
   justify-content: space-between;
 }
 
+.day-date {
+  background-color: var(--bg-date);
+  border-color: var(--date-border);
+  border-style: solid;
+  font-size: small;
+  border-radius: 2em;
+  border-width: 0.12em;
+  display: flex;
+  justify-content: center;
+  padding: 0.1em;
+}
+
 @media (max-width: 1200px) {
   .day-box {
     width: 100%;
@@ -834,18 +857,24 @@ textarea {
 }
 
 @media (max-width: 768px) {
+  .days-grid {
+    gap: 1.8em;
+  }
   .calendar-container {
-    padding: 0.2em;
+    padding: 2em;
     max-width: fit-content;
     width: 100%;
   }
-
+  .day-date {
+    border-radius: 0.5em;
+  }
   .day-box {
     width: 100%;
     height: auto;
     display: block; /* Gör om till block för att vara i en kolumn */
     border-style: none;
     justify-content: center;
+    border-radius: 0;
   }
   
   /* Döljer innehållet i boxen förutom datumet */
@@ -855,10 +884,13 @@ textarea {
 
   /* Gör datumet synligt och centrera det */
   .day-box .day-date {
-    font-size: small;
+    font-size: medium;
     font-weight: bold;
-    padding: 1em;
-    border-width: 0.1em;
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    padding-left: 1em;
+    padding-right: 1em;
+    border-width: 0.2em;
   }
 
    /* Döljer veckodagarna */
@@ -877,35 +909,25 @@ textarea {
 }
 
 @media (max-width: 440px) {
-  .days-grid {
-    gap: 1px
-  }
-  .day-box .day-date {
-    font-size: xx-small;
+  .calendar-page {
+    padding: 0;
   }
   .calendar-container {
-    padding: 0.1em;
+    margin-top: 3em;
   }
+  
+  .day-box .day-date {
+    font-size: x-small;
+  }
+  
 }
-
-
 
 .day-box.empty {
   background-color: transparent;
   border: none;
 }
 
-.day-date {
-  background-color: var(--bg-date);
-  border-color: var(--date-border);
-  border-style: solid;
-  font-size: small;
-  border-radius: 2em;
-  border-width: 0.12em;
-  display: flex;
-  justify-content: center;
-  padding: 0.1em;
-}
+
 
 .month-btn {
   color: var(--default-link-color);
@@ -969,7 +991,8 @@ textarea {
 }
 
 .remove-btn {
-  font-size: xx-small;
+  font-size: small;
+  height: 50%;
 }
 
 .aeContainer {
@@ -1010,4 +1033,12 @@ textarea {
   .board-info-logo {
     display: none;
   }
+}
+
+.format-btn {
+  background-color: transparent;
+  margin-right: 0.5em;
+}
+.format-btn-active {
+  background-color: var(--bg-secondary);
 }

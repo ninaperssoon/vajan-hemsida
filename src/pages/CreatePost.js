@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { addDoc, collection, getDocs, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { auth, db, storage } from '../firebase-config';
 import { useNavigate } from 'react-router-dom';
+import { createEditor, Node } from 'slate';
+import { Slate, Editable, withReact } from 'slate-react';
+import { Editor, Transforms } from 'slate';
 
 function CreatePost() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -13,7 +16,82 @@ function CreatePost() {
   const [selectedTags, setSelectedTags] = useState([]);
   const postCollecctionRef = collection(db, "posts");
 
-  console.log(selectedTags)
+  const [editor] = useState(() => withReact(createEditor()));
+  const [value, setValue] = useState([
+    {
+      type: 'paragraph',
+      children: [{ text: 'Skriv ditt inlägg här...' }],
+    },
+  ]);
+
+  // Local state for tracking active formatting
+  const [activeFormats, setActiveFormats] = useState({
+    bold: false,
+    italic: false,
+    underline: false,
+  });
+
+  const handleChange = (newValue) => {
+    setValue(newValue);
+    const text = newValue.map(n => Node.string(n)).join('\n');
+    setPostText(text);
+
+    // Update the active formatting state
+    setActiveFormats({
+      bold: Editor.marks(editor)?.bold || false,
+      italic: Editor.marks(editor)?.italic || false,
+      underline: Editor.marks(editor)?.underline || false,
+    });
+  };
+
+  const toggleMark = (format) => {
+    const isActive = activeFormats[format];
+    if (isActive) {
+      Editor.removeMark(editor, format);
+    } else {
+      Editor.addMark(editor, format, true);
+    }
+
+    // Update local state immediately
+    setActiveFormats((prev) => ({
+      ...prev,
+      [format]: !isActive,
+    }));
+  };
+
+  const CodeElement = props => (
+    <pre {...props.attributes}>
+      <code>{props.children}</code>
+    </pre>
+  );
+
+  const DefaultElement = props => <p {...props.attributes}>{props.children}</p>;
+
+  const Leaf = props => (
+    <span
+      {...props.attributes}
+      style={{
+        fontWeight: props.leaf.bold ? 'bold' : 'normal',
+        fontStyle: props.leaf.italic ? 'italic' : 'normal',
+        textDecoration: props.leaf.underline ? 'underline' : 'none',
+      }}
+    >
+      {props.children}
+    </span>
+  );
+
+  const renderElement = props => {
+    switch (props.element.type) {
+      case 'code':
+        return <CodeElement {...props} />;
+      default:
+        return <DefaultElement {...props} />;
+    }
+  };
+
+  const renderLeaf = useCallback(props => {
+    return <Leaf {...props} />;
+  }, []);
 
   let navigate = useNavigate();
 
@@ -42,7 +120,6 @@ function CreatePost() {
 
   const createPost = async () => {
     if (!auth.currentUser) {
-      // Redirect to login if user is not authenticated
       navigate("/login");
       return;
     }
@@ -86,15 +163,41 @@ function CreatePost() {
             }}
           />
         </div>
+
         <div className='inputGp'>
           <label className='create-label'>Inlägg:</label>
-          <textarea 
-            placeholder='Skriv ditt inlägg här' 
-            onChange={(event) => {
-              setPostText(event.target.value);
-            }}
-          />
+          <Slate 
+            editor={editor} 
+            initialValue={value} 
+            onChange={handleChange}
+          >
+            <div style={{ marginBottom: '10px' }}>
+              <button 
+                type="button" 
+                className={`format-btn ${activeFormats.bold ? 'active' : ''}`}
+                onClick={() => toggleMark('bold')}>
+                <strong>B</strong>
+              </button>
+              <button 
+                type="button" 
+                className={`format-btn ${activeFormats.italic ? 'active' : ''}`}
+                onClick={() => toggleMark('italic')}>
+                <em>I</em>
+              </button>
+              <button 
+                type="button" 
+                className={`format-btn ${activeFormats.underline ? 'active' : ''}`}
+                onClick={() => toggleMark('underline')}>
+                <u>U</u>
+              </button>
+            </div>
+            <Editable 
+              renderElement={renderElement}
+              renderLeaf={renderLeaf}
+            />
+          </Slate>
         </div>
+
         <div className='inputGp'>
           <label className='create-label'>Ladda upp bild:</label>
           <input 
@@ -108,14 +211,21 @@ function CreatePost() {
           <label className='create-label mb-2'>Taggar:</label>
           <div className='checkbox-buttons'>
             {tags.map((tag) => (
-              <div>
-                <input type='checkbox' id={tag.id} className='checkbox-button' onChange={handleTagChange}/>
-                <label for={tag.id} className='checkbox-label px-4 py-1 custom-size'>{tag.name}</label>
+              <div key={tag.id}>
+                <input 
+                  type='checkbox' 
+                  id={tag.id} 
+                  className='checkbox-button' 
+                  onChange={handleTagChange}
+                />
+                <label 
+                  htmlFor={tag.id} 
+                  className='checkbox-label px-4 py-1 custom-size'>
+                  {tag.name}
+                </label>
               </div>
-              
             ))}
           </div>
-          
         </div>
         <button onClick={createPost}>Publicera</button>
       </div>
