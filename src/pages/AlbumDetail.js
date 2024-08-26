@@ -39,9 +39,9 @@ function AlbumDetail() {
 
   useEffect(() => {
     if (inView && hasMore) {
-      fetchPhotos(loadedPhotos.length, 20);
+      throttledFetchPhotos(loadedPhotos.length, 20);
     }
-  }, [inView, hasMore, fetchPhotos, loadedPhotos.length]);
+  }, [inView, hasMore, throttledFetchPhotos, loadedPhotos.length]);
 
   const openOverlay = (index) => {
     setCurrentIndex(index);
@@ -84,6 +84,30 @@ function AlbumDetail() {
     };
   }, [currentIndex]);
 
+  // Throttle-funktion
+  function throttle(func, limit) {
+    let lastFunc;
+    let lastRan;
+    return function(...args) {
+      const context = this;
+      if (!lastRan) {
+        func.apply(context, args);
+        lastRan = Date.now();
+      } else {
+        clearTimeout(lastFunc);
+        lastFunc = setTimeout(function() {
+          if ((Date.now() - lastRan) >= limit) {
+            func.apply(context, args);
+            lastRan = Date.now();
+          }
+        }, limit - (Date.now() - lastRan));
+      }
+    };
+  }
+
+  // Använd throttle på fetchPhotos-funktionen
+  const throttledFetchPhotos = useCallback(throttle(fetchPhotos, 200), [fetchPhotos]);
+
   return (
     <div>
       <div className='container album-container'>
@@ -100,6 +124,7 @@ function AlbumDetail() {
                 alt={`Photo ${index + 1}`} 
                 className='photo-image'
                 onClick={() => openOverlay(index)}
+                loading="lazy" 
               />
             </div>
           ))}
