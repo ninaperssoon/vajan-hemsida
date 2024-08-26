@@ -9,32 +9,55 @@ function AlbumDetail() {
   const [loadedPhotos, setLoadedPhotos] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(null);
+  const [initialLoad, setInitialLoad] = useState(true);  // Flagga för initial laddning
   const { ref: observerRef, inView } = useInView({
     threshold: 1,
     triggerOnce: false
   });
 
+  const preloadImage = (src) => {
+    const img = new Image();
+    img.src = src;
+  };
+
   const fetchPhotos = useCallback(async (startIndex, limit) => {
     const storage = getStorage();
     const albumRef = ref(storage, `albums/${albumName}`);
     const albumImages = await listAll(albumRef);
-
-    const photosData = await Promise.all(
-      albumImages.items.slice(startIndex, startIndex + limit).map(async (itemRef) => {
-        const photoUrl = await getDownloadURL(itemRef);
-        return photoUrl;
-      })
-    );
-
+  
+    const limitedItems = albumImages.items.slice(startIndex, startIndex + limit);
+  
+    // Dela upp nedladdningar i batchar om 5
+    const batchSize = 5;
+    const photoBatches = [];
+  
+    for (let i = 0; i < limitedItems.length; i += batchSize) {
+      const batch = limitedItems.slice(i, i + batchSize);
+      photoBatches.push(
+        Promise.all(
+          batch.map(async (itemRef) => {
+            const photoUrl = await getDownloadURL(itemRef);
+            preloadImage(photoUrl);
+            return photoUrl;
+          })
+        )
+      );
+    }
+  
+    const photosData = (await Promise.all(photoBatches)).flat();
+  
+    setLoadedPhotos((prev) => {
+      const newPhotos = photosData.filter((photo) => !prev.includes(photo));
+      return [...prev, ...newPhotos];
+    });
+  
     if (photosData.length < limit) {
       setHasMore(false);
     }
-
-    setLoadedPhotos((prev) => [...prev, ...photosData]);
   }, [albumName]);
 
-   // Throttle-funktion
-   function throttle(func, limit) {
+  // Throttle-funktion
+  function throttle(func, limit) {
     let lastFunc;
     let lastRan;
     return function(...args) {
@@ -58,14 +81,17 @@ function AlbumDetail() {
   const throttledFetchPhotos = useCallback(throttle(fetchPhotos, 200), [fetchPhotos]);
 
   useEffect(() => {
-    fetchPhotos(0, 20);
-  }, [fetchPhotos]);
+    if (initialLoad) {
+      fetchPhotos(0, 20);
+      setInitialLoad(false);  // Stäng av initial laddning efter första körningen
+    }
+  }, [fetchPhotos, initialLoad]);
 
   useEffect(() => {
-    if (inView && hasMore) {
+    if (inView && hasMore && !initialLoad) {
       throttledFetchPhotos(loadedPhotos.length, 20);
     }
-  }, [inView, hasMore, throttledFetchPhotos, loadedPhotos.length]);
+  }, [inView, hasMore, throttledFetchPhotos, loadedPhotos.length, initialLoad]);
 
   const openOverlay = (index) => {
     setCurrentIndex(index);
@@ -107,8 +133,6 @@ function AlbumDetail() {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [currentIndex]);
-
- 
 
   return (
     <div>
