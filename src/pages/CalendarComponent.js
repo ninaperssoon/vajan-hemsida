@@ -44,6 +44,14 @@ function CalendarComponent({ initialYear, isAuth }) {
     const months = generateCalendar(currentYear);
     const currentMonthData = months[currentMonthIndex];
     const [events, setEvents] = useState([]);
+    const eventTypes = [
+        ['Vajans egna event', 'event-type-vajans'],
+        ['Samsittning', 'event-type-samsittning'], 
+        ['Nationens event', 'event-type-nationen'], 
+        ['Andra föreningars event', 'event-type-andra'], 
+        ['Special event', 'event-type-special']
+    ];
+
 
     const handlePrevMonth = () => {
         if (currentMonthIndex === 0) {
@@ -103,17 +111,37 @@ function CalendarComponent({ initialYear, isAuth }) {
     };
     
     useEffect(() => {
+        setEvents([]);
         getEvents();
     }, [currentMonthIndex, currentYear]); // Ladda om eventen när månad eller år ändras
 
     
     return (
         <div className='calendar'>
-            <div className='month-nav'>
-                <button onClick={handlePrevMonth} className='month-btn'>&#8249;</button>
-                <h3 className='mx-3'>{currentMonthData.name} {currentYear}</h3>
-                <button onClick={handleNextMonth} className='month-btn'>&#8250;</button>
+            <div className='month-nav row d-flex align-items-center'>
+                <div className='col-4 d-flex align-items-end'>
+                    <button onClick={handlePrevMonth} className='month-btn'>&#8249;</button>
+                    <h3 className='mx-3'>{currentMonthData.name} {currentYear}</h3>
+                    <button onClick={handleNextMonth} className='month-btn'>&#8250;</button>
+                </div>
+                
+            
+                <div className='col-8 d-flex justify-content-between'>
+                    {eventTypes.map((eventType, index) => (
+                        <div key={index} className='d-flex align-items-center'>
+                            <div className={`circle ${eventType[1]}`}>
+                                
+                            </div>
+                            <div className='legend-text'>
+                                {eventType[0]}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                
+                    
             </div>
+            
             <div className='days-grid'>
                 {daysOfWeek.map((day, index) => (
                     <div key={index} className='day-header'>

@@ -1042,3 +1042,16 @@ textarea {
 .format-btn-active {
   background-color: var(--bg-secondary);
 }
+
+.legend-text {
+  color: var(--default-text-color);
+  font-size: 0.9em;
+}
+
+.circle {
+  width: 0.8em;
+  height: 0.8em;
+  border-radius: 50%;
+  cursor: default;
+  margin-right: 0.3em;
+}
