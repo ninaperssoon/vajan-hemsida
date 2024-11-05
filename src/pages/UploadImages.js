@@ -77,16 +77,18 @@ function UploadImages() {
     }, []);
 
     return (
-        <div className="createPostPage my-3">
+        <div className="createPostPage my-5">
             <div className="create-container">
                 <h2>Döp albumet:</h2>
                 <input
+                    className="form-control my-3"
                     onChange={(event) => { 
                         setAlbumTitle(event.target.value);
                     }}
                 ></input>
                 <input 
                     type="file" 
+                    className="form-control my-3"
                     onChange={(event) => {
                         setImageUploads(event.target.files);
                     }}
