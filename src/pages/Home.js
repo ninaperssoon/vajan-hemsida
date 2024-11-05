@@ -254,7 +254,9 @@ function Home({ isAuth }) {
                           )}
                         </div>
                       </div>
-                      <div className="postTextContainer preformatted-text">{post.postText}</div>
+                      <div className="postTextContainer preformatted-text" 
+                        dangerouslySetInnerHTML={{ __html: post.sanitizedPostText }} 
+                      />
                         {post.imageUrl && <img src={post.imageUrl} alt="Post" />}
                         <p className="mt-3">Vaj vaj!</p>
                         <p>{post.author.name}</p>

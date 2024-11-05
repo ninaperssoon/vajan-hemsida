@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { addDoc, collection, getDocs, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { auth, db, storage } from '../firebase-config';
 import { useNavigate } from 'react-router-dom';
-import { createEditor, Node } from 'slate';
-import { Slate, Editable, withReact } from 'slate-react';
-import { Editor, Transforms } from 'slate';
+import Quill from 'quill';
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+import DOMPurify from 'dompurify';
+
 
 function CreatePost() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -14,84 +16,8 @@ function CreatePost() {
   const [image, setImage] = useState(null);
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
-  const postCollecctionRef = collection(db, "posts");
-
-  const [editor] = useState(() => withReact(createEditor()));
-  const [value, setValue] = useState([
-    {
-      type: 'paragraph',
-      children: [{ text: 'Skriv ditt inlägg här...' }],
-    },
-  ]);
-
-  // Local state for tracking active formatting
-  const [activeFormats, setActiveFormats] = useState({
-    bold: false,
-    italic: false,
-    underline: false,
-  });
-
-  const handleChange = (newValue) => {
-    setValue(newValue);
-    const text = newValue.map(n => Node.string(n)).join('\n');
-    setPostText(text);
-
-    // Update the active formatting state
-    setActiveFormats({
-      bold: Editor.marks(editor)?.bold || false,
-      italic: Editor.marks(editor)?.italic || false,
-      underline: Editor.marks(editor)?.underline || false,
-    });
-  };
-
-  const toggleMark = (format) => {
-    const isActive = activeFormats[format];
-    if (isActive) {
-      Editor.removeMark(editor, format);
-    } else {
-      Editor.addMark(editor, format, true);
-    }
-
-    // Update local state immediately
-    setActiveFormats((prev) => ({
-      ...prev,
-      [format]: !isActive,
-    }));
-  };
-
-  const CodeElement = props => (
-    <pre {...props.attributes}>
-      <code>{props.children}</code>
-    </pre>
-  );
-
-  const DefaultElement = props => <p {...props.attributes}>{props.children}</p>;
-
-  const Leaf = props => (
-    <span
-      {...props.attributes}
-      style={{
-        fontWeight: props.leaf.bold ? 'bold' : 'normal',
-        fontStyle: props.leaf.italic ? 'italic' : 'normal',
-        textDecoration: props.leaf.underline ? 'underline' : 'none',
-      }}
-    >
-      {props.children}
-    </span>
-  );
-
-  const renderElement = props => {
-    switch (props.element.type) {
-      case 'code':
-        return <CodeElement {...props} />;
-      default:
-        return <DefaultElement {...props} />;
-    }
-  };
-
-  const renderLeaf = useCallback(props => {
-    return <Leaf {...props} />;
-  }, []);
+  const postCollectionRef = collection(db, "posts");
+  const editorRef = useRef(null); // Create a ref for the editor container
 
   let navigate = useNavigate();
 
@@ -105,8 +31,32 @@ function CreatePost() {
       }));
       setTags(tagsList);
     };
-
     fetchTags();
+
+    // Initialize Quill only if there's no existing instance
+  if (editorRef.current && !editorRef.current.__quill) {
+    const quill = new Quill(editorRef.current, {
+      theme: 'bubble',
+      placeholder: 'Skriv ditt inlägg här...',
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline'],
+          ['link', 'blockquote', 'code-block'],
+          [{ list: 'ordered' }, { list: 'bullet' }]
+        ]
+      }
+    });
+
+    // Save the instance to avoid re-initializing
+    editorRef.current.__quill = quill;
+
+    // Sync editor content with postText
+    quill.on('text-change', () => {
+      setPostText(quill.root.innerHTML);
+    });
+  }
+    
+
   }, []);
 
   const handleTagChange = (event) => {
@@ -126,14 +76,17 @@ function CreatePost() {
 
     const formattedDate = formatDate(currentDate);
     let imageUrl = "";
+    const sanitizedPostText = DOMPurify.sanitize(postText);
+
+
     if (image) {
-        const imageRef = ref(storage, `images/${image.name}`);
-        await uploadBytes(imageRef, image);
-        imageUrl = await getDownloadURL(imageRef);
+      const imageRef = ref(storage, `images/${image.name}`);
+      await uploadBytes(imageRef, image);
+      imageUrl = await getDownloadURL(imageRef);
     }
-    await addDoc(postCollecctionRef, {
+    await addDoc(postCollectionRef, {
       title,
-      postText,
+      sanitizedPostText, // Save the Quill content in postText state
       imageUrl,
       formattedDate,
       selectedTags,
@@ -150,6 +103,8 @@ function CreatePost() {
     return `${day}/${month}/${year}`;
   }
 
+
+
   return (
     <div className='createPostPage my-3'>
       <div className='create-container container-md'>
@@ -157,6 +112,7 @@ function CreatePost() {
         <div className='inputGp'>
           <label className='create-label'>Titel:</label>
           <input 
+            type='text'
             placeholder='Titel...' 
             onChange={(event) => { 
               setTitle(event.target.value);
@@ -166,47 +122,29 @@ function CreatePost() {
 
         <div className='inputGp'>
           <label className='create-label'>Inlägg:</label>
-          <Slate 
-            editor={editor} 
-            initialValue={value} 
-            onChange={handleChange}
-          >
-            <div style={{ marginBottom: '10px' }}>
-              <button 
-                type="button" 
-                className={`format-btn ${activeFormats.bold ? 'active' : ''}`}
-                onClick={() => toggleMark('bold')}>
-                <strong>B</strong>
-              </button>
-              <button 
-                type="button" 
-                className={`format-btn ${activeFormats.italic ? 'active' : ''}`}
-                onClick={() => toggleMark('italic')}>
-                <em>I</em>
-              </button>
-              <button 
-                type="button" 
-                className={`format-btn ${activeFormats.underline ? 'active' : ''}`}
-                onClick={() => toggleMark('underline')}>
-                <u>U</u>
-              </button>
-            </div>
-            <Editable 
-              renderElement={renderElement}
-              renderLeaf={renderLeaf}
-            />
-          </Slate>
+          {/* Quill editor container */}
+          <div className='form-control mt-3 mb-3'>
+            <div 
+              id='editor' 
+              ref={editorRef} 
+              className="quill-editor"
+            ></div>
+          </div>
+          
         </div>
 
-        <div className='inputGp'>
-          <label className='create-label'>Ladda upp bild:</label>
+        <div>
+          <label className='create-label mb-2'>Ladda upp bild:</label>
           <input 
             type='file'
+            className='form-control'
+            id='formFile'
             onChange={(event) => {
               setImage(event.target.files[0]);
             }}
           />
         </div>
+
         <div className='inputGp'>
           <label className='create-label mb-2'>Taggar:</label>
           <div className='checkbox-buttons'>
@@ -227,6 +165,7 @@ function CreatePost() {
             ))}
           </div>
         </div>
+        
         <button onClick={createPost}>Publicera</button>
       </div>
     </div>
