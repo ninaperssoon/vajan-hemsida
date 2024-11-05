@@ -78,18 +78,18 @@ function AlbumDetail() {
   }
 
   // Använd throttle på fetchPhotos-funktionen
-  const throttledFetchPhotos = useCallback(throttle(fetchPhotos, 200), [fetchPhotos]);
+  const throttledFetchPhotos = useCallback(throttle(fetchPhotos, 20), [fetchPhotos]);
 
   useEffect(() => {
     if (initialLoad) {
-      fetchPhotos(0, 20);
+      fetchPhotos(0, 10);
       setInitialLoad(false);  // Stäng av initial laddning efter första körningen
     }
   }, [fetchPhotos, initialLoad]);
 
   useEffect(() => {
     if (inView && hasMore && !initialLoad) {
-      throttledFetchPhotos(loadedPhotos.length, 20);
+      throttledFetchPhotos(loadedPhotos.length, 10);
     }
   }, [inView, hasMore, throttledFetchPhotos, loadedPhotos.length, initialLoad]);
 
