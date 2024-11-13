@@ -5,7 +5,6 @@ import { useInView } from 'react-intersection-observer';
 
 function AlbumDetail() {
   const { albumName } = useParams();
-  const [photos, setPhotos] = useState([]);
   const [loadedPhotos, setLoadedPhotos] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(null);
