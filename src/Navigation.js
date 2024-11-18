@@ -1,10 +1,17 @@
 import { NavLink, useLocation } from "react-router-dom";
 import logoRed from './images/logoRed.png';
+import { useState } from 'react';
 
 const Navigation = ({ isAuth, signUserOut }) => {
   const location = useLocation();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const isAboutActive = location.pathname.startsWith('/aboutvajan') || location.pathname.startsWith('/aboutharken');
+
+  // Funktion för att hantera dropdownens öppning/stängning
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   return (
     <nav className="navbar navbar-default navbar-expand-lg navbar-light bg-light sticky-top">
@@ -21,18 +28,20 @@ const Navigation = ({ isAuth, signUserOut }) => {
               <NavLink className="nav-link" exact to="/" activeClassName="active">Hem</NavLink>
             </li>
 
-            <li className={`nav-item dropdown nav-link-dropdown ${isAboutActive ? 'active' : ''}`}>
-              <span className={`nav-link dropdown-toggle ${isAboutActive ? 'active' : ''}`} id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <li className={`nav-item dropdown ${isDropdownOpen ? 'show' : ''} ${isAboutActive ? 'active' : ''}`}>
+              <span 
+                className={`nav-link dropdown-toggle ${isDropdownOpen ? 'active' : ''}`}
+                id="navbarDropdown" 
+                role="button"
+                aria-expanded={isDropdownOpen ? 'true' : 'false'}
+                onClick={toggleDropdown}
+              >
                 Om oss
               </span>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><NavLink className="dropdown-item" to="/aboutvajan" activeClassName="active">Om Vajan</NavLink></li>
-                <li><NavLink className="dropdown-item" to="/aboutharken" activeClassName="active">Härken</NavLink></li>
+              <ul className={`dropdown-menu ${isDropdownOpen ? 'show' : ''}`} aria-labelledby="navbarDropdown">
+                <li><NavLink className="dropdown-item" to="/aboutvajan" activeClassName="active" onClick={() => setIsDropdownOpen(false)}>Om Vajan</NavLink></li>
+                <li><NavLink className="dropdown-item" to="/aboutharken" activeClassName="active" onClick={() => setIsDropdownOpen(false)}>Härken</NavLink></li>
               </ul>
-            </li>
-
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/boardinfo" activeClassName="active">Styrelsen</NavLink>
             </li>
 
             <li className="nav-item">
