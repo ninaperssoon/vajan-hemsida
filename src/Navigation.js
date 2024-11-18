@@ -69,7 +69,7 @@ const Navigation = ({ isAuth, signUserOut }) => {
                 <li className="nav-item">
                   <NavLink className="nav-link" to="/addevents" activeClassName="active">Lägg till event</NavLink>
                 </li>
-                <button className="btn btn-primary" onClick={signUserOut}> Logga ut </button>
+                <button className="btn btn-primary" onClick={signUserOut}>Logga ut</button>
               </>
             )}
           </ul>

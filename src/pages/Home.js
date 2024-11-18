@@ -11,7 +11,10 @@ function Home({ isAuth }) {
   const [selectedTag, setSelectedTag] = useState(null);
   const [selectedDate, setSelectedDate] = useState({ month: null, year: null });
   const [archiveDates, setArchiveDates] = useState([]);
-  console.log(archiveDates)
+  const [currentPage, setCurrentPage] = useState(1); // Håller reda på vilken sida vi är på
+  const [postsPerPage, setPostsPerPage] = useState(20); // Antal inlägg per sida
+  const [lastVisible, setLastVisible] = useState(null); // Referens till det sista synliga inlägget
+
 
   const deletePost = async (id) => {
     const postDoc = doc(db, "posts", id);
@@ -48,7 +51,6 @@ function Home({ isAuth }) {
                                const [year, month] = dateString.split('-').map(Number);
                                return { month, year };
                              });
-
     setArchiveDates(uniqueDates);
   };
 
@@ -236,7 +238,7 @@ function Home({ isAuth }) {
               </div>
             </div>
 
-            <div className="col-lg-9 col-md-6">
+            <div className="col-lg-9 ">
             {filteredPosts.length > 0 ? (
                 filteredPosts.map((post) => (
                   <div key={post.id}>
@@ -292,7 +294,28 @@ function Home({ isAuth }) {
                     <h1>Inga inlägg matchar din sökning.</h1>
                   </div>
                 )}
+              <div className="justify-content-center d-flex">
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination">
+                    <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    
+                    <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
             </div>
+            
           </div>
         </div>
       </div>
