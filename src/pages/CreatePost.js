@@ -109,11 +109,12 @@ function CreatePost() {
     <div className='createPostPage my-3'>
       <div className='create-container container-md'>
         <h2>Skapa nytt inlägg</h2>
-        <div className='inputGp'>
-          <label className='create-label'>Titel:</label>
+        <div className='mt-3'>
+          <label className='create-label mb-2'>Titel:</label>
           <input 
             type='text'
             placeholder='Titel...' 
+            className='form-control'
             onChange={(event) => { 
               setTitle(event.target.value);
             }}

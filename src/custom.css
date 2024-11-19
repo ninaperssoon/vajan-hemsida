@@ -1055,3 +1055,8 @@ textarea {
   cursor: default;
   margin-right: 0.3em;
 }
+
+.pagination .page-link {
+  color: var(--default-text-color); /* Change text color */
+  background-color: var(--bg-light); /* Change background color */
+}
