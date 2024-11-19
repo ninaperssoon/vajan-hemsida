@@ -1060,3 +1060,30 @@ textarea {
   color: var(--default-text-color); /* Change text color */
   background-color: var(--bg-light); /* Change background color */
 }
+
+.page-link:hover {
+  color: var(--primary-active-color);
+
+}
+
+.page-link:active {
+  color: var(--primary-active-color);
+  border-color: var(--bg-date);
+}
+
+.page-link:focus {
+  color: var(--primary-active-color);
+  border-color: var(--bg-date);
+  box-shadow: none; /* Creates a blue glow effect */
+
+}
+
+.page-item.active .page-link {
+  border-color: var(--bg-date);
+  color: var(--primary-active-color);
+}
+
+.page-item.disabled .page-link {
+  color: var(--muted-text-color)
+}
+
