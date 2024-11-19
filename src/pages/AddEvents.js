@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../firebase-config';
+import { useNavigate } from 'react-router-dom';
+
 
 function AddEvents() {
   const [events, setEvents] = useState([]);
   const [eventTitle, setEventTitle] = useState('');
   const [eventDate, setEventDate] = useState(null);
   const [eventType, setEventType] = useState('Typ av event');
+
+  let navigate = useNavigate();
+
 
   const handleSelect = (eventKey) => {
     setEventType(eventKey);
@@ -67,6 +72,8 @@ function AddEvents() {
       // Rensa eventlistan efter uppladdning
       setEvents([]);
 
+      navigate("/calendar");
+
     } catch (error) {
       console.error('Fel vid uppladdning av event:', error);
       alert('Det gick inte att publicera eventen. Försök igen senare.');
@@ -122,10 +129,10 @@ function AddEvents() {
         </div>
         
         <button onClick={handleAddEvent}>Lägg till</button>
-        <button onClick={handleUpload}>Publicera</button>
+        
       </div>
-      <div className='event-list create-container aeContainer p-2 my-2'>
-        <h3>Eventlista</h3>
+      <div className='event-list create-container aeContainer p-3 my-2'>
+        <h2>Eventlista</h2>
         <ul>
           {events.map((event, index) => (
             <li key={index}>
@@ -139,6 +146,7 @@ function AddEvents() {
             </li>
           ))}
         </ul>
+        <button onClick={handleUpload}>Publicera</button>
       </div>
     </div>
   );
