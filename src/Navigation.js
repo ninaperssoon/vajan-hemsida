@@ -45,6 +45,10 @@ const Navigation = ({ isAuth, signUserOut }) => {
             </li>
 
             <li className="nav-item">
+              <NavLink className="nav-link" to="/boardinfo" activeClassName="active">Styrelsen</NavLink>
+            </li>
+
+            <li className="nav-item">
               <NavLink className="nav-link" to="/imagearchive" activeClassName="active">Fotoarkiv</NavLink>
             </li>
 
