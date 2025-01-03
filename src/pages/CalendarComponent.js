@@ -119,24 +119,27 @@ function CalendarComponent({ initialYear, isAuth }) {
     return (
         <div className='calendar'>
             <div className='month-nav row d-flex align-items-center'>
-                <div className='col-4 d-flex align-items-end'>
+                <div className='col-sm-4 d-flex align-items-end'>
                     <button onClick={handlePrevMonth} className='month-btn'>&#8249;</button>
                     <h3 className='mx-3'>{currentMonthData.name} {currentYear}</h3>
                     <button onClick={handleNextMonth} className='month-btn'>&#8250;</button>
                 </div>
                 
             
-                <div className='col-8 d-flex justify-content-between'>
-                    {eventTypes.map((eventType, index) => (
-                        <div key={index} className='d-flex align-items-center'>
-                            <div className={`circle ${eventType[1]}`}>
-                                
+                <div className=' col-8 legend'>
+                    <div className=' d-flex justify-content-between'>
+                        {eventTypes.map((eventType, index) => (
+                            <div key={index} className='d-flex align-items-center '>
+                                <div className={`circle ${eventType[1]}`}>
+                                    
+                                </div>
+                                <div className='legend-text '>
+                                    {eventType[0]}
+                                </div>
                             </div>
-                            <div className='legend-text'>
-                                {eventType[0]}
-                            </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
+                    
                 </div>
                 
                     
@@ -226,9 +229,9 @@ function CalendarComponent({ initialYear, isAuth }) {
                                 .map(event => (
                                     
                                     <div className='p-3'>
-                                        <h2>
+                                        <p>
                                             {event.title}
-                                        </h2>
+                                        </p>
                                     </div>
                                     
                             ))}

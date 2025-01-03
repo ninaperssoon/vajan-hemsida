@@ -11,8 +11,39 @@ function Home({ isAuth }) {
   const [selectedTag, setSelectedTag] = useState(null);
   const [selectedDate, setSelectedDate] = useState({ month: null, year: null });
   const [archiveDates, setArchiveDates] = useState([]);
-  console.log(archiveDates)
+  const [currentPage, setCurrentPage] = useState(1); // Håller reda på vilken sida vi är på
+  const postsPerPage = 15; // Antal inlägg per sida
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
+  const maxPageButtons = 3; // Number of page buttons to show
+
+  const getPageNumbers = () => {
+    if (totalPages <= maxPageButtons) {
+      // Show all pages if total pages are less than or equal to maxPageButtons
+      return Array.from({ length: totalPages }, (_, index) => index + 1);
+    }
+
+    // When on the first page(s)
+    if (currentPage <= 2) {
+      return [1, 2, 3];
+    }
+
+    // When on the last page(s)
+    if (currentPage >= totalPages - 1) {
+      return [totalPages - 2, totalPages - 1, totalPages];
+    }
+
+    // Show current, previous, and next page when in the middle
+    return [currentPage - 1, currentPage, currentPage + 1];
+  };
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  
   const deletePost = async (id) => {
     const postDoc = doc(db, "posts", id);
     await deleteDoc(postDoc);
@@ -29,7 +60,7 @@ function Home({ isAuth }) {
       } else {
         const posts = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         setPostList(posts);
-        setFilteredPosts(posts);
+        setFilteredPosts(posts.slice(0, postsPerPage));
         generateArchiveDates(posts);
       }
     } catch (error) {
@@ -48,7 +79,6 @@ function Home({ isAuth }) {
                                const [year, month] = dateString.split('-').map(Number);
                                return { month, year };
                              });
-
     setArchiveDates(uniqueDates);
   };
 
@@ -102,31 +132,23 @@ function Home({ isAuth }) {
       );
       return titleMatches || tagsMatch;
     });
-    setFilteredPosts(filtered);
-  }, [searchTerm, postLists, tags]);
-
-  useEffect(() => {
-    if (selectedTag) {
-      const filtered = postLists.filter(post => 
-        post.selectedTags && post.selectedTags.includes(selectedTag)
-      );
-      setFilteredPosts(filtered);
-    } else {
-      setFilteredPosts(postLists);
-    }
-  }, [selectedTag, postLists]);
-
-  useEffect(() => {
-    if (selectedDate.month && selectedDate.year) {
-      const filtered = postLists.filter(post => {
-        const postDate = new Date(post.timeStamp.seconds * 1000);
-        return postDate.getMonth() + 1 === selectedDate.month && postDate.getFullYear() === selectedDate.year;
-      });
-      setFilteredPosts(filtered);
-    } else {
-      setFilteredPosts(postLists);
-    }
-  }, [selectedDate, postLists]);
+  
+    // Apply tag filtering if a tag is selected
+    const tagFiltered = selectedTag
+      ? filtered.filter(post => post.selectedTags && post.selectedTags.includes(selectedTag))
+      : filtered;
+  
+    // Apply date filtering if a date is selected
+    const dateFiltered = selectedDate.month && selectedDate.year
+      ? tagFiltered.filter(post => {
+          const postDate = new Date(post.timeStamp.seconds * 1000);
+          return postDate.getMonth() + 1 === selectedDate.month && postDate.getFullYear() === selectedDate.year;
+        })
+      : tagFiltered;
+  
+    setFilteredPosts(dateFiltered);
+  }, [searchTerm, selectedTag, selectedDate, postLists, tags]);
+  
 
   return (
     <>
@@ -137,7 +159,7 @@ function Home({ isAuth }) {
         </div>
       </div>
 
-      <div className="homePage">
+      <div className="homePage" id="document">
         <div className="mb-4 px-lg-5 px-md-2 px-1 py-3">
           <div className="row px-md-5 ">
             <div className="col-lg-3 col-md-6 ">
@@ -236,9 +258,9 @@ function Home({ isAuth }) {
               </div>
             </div>
 
-            <div className="col-lg-9 col-md-6">
-            {filteredPosts.length > 0 ? (
-                filteredPosts.map((post) => (
+            <div className="col-lg-9 ">
+            {currentPosts.length > 0 ? (
+                currentPosts.map((post) => (
                   <div key={post.id}>
                     <div className="post p-3 p-md-5">
                       <div className="postHeader">
@@ -292,7 +314,46 @@ function Home({ isAuth }) {
                     <h1>Inga inlägg matchar din sökning.</h1>
                   </div>
                 )}
+              <div className="justify-content-center d-flex">
+                <nav aria-label="Page navigation example">
+                  <ul className="pagination" id="pagination">
+                    {/* Previous Button */}
+                    <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                      <button
+                        className="page-link"
+                        onClick={() => paginate(currentPage - 1)}
+                        aria-label="Previous"
+                        disabled={currentPage === 1}
+                      >
+                        <span aria-hidden="true">&laquo;</span>
+                      </button>
+                    </li>
+
+                    {/* Page Number Buttons */}
+                    {getPageNumbers().map((pageNumber) => (
+                      <li key={pageNumber} className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}>
+                        <button className="page-link" onClick={() => paginate(pageNumber)}>
+                          {pageNumber}
+                        </button>
+                      </li>
+                    ))}
+
+                    {/* Next Button */}
+                    <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                      <button
+                        className="page-link"
+                        onClick={() => paginate(currentPage + 1)}
+                        aria-label="Next"
+                        disabled={currentPage === totalPages}
+                      >
+                        <span aria-hidden="true">&raquo;</span>
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
             </div>
+            
           </div>
         </div>
       </div>
