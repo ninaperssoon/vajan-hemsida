@@ -79,13 +79,18 @@ function UploadImages() {
     return (
         <div className="createPostPage my-5">
             <div className="create-container">
-                <h2>Döp albumet:</h2>
-                <input
-                    className="form-control my-3"
-                    onChange={(event) => { 
-                        setAlbumTitle(event.target.value);
-                    }}
-                ></input>
+                <h2>Ladda upp bilder i ett album</h2>
+                <div>
+                <label className='create-label my-2'>Döp albumet:</label>
+                    <input
+                        placeholder="Albumnamn..."
+                        className="form-control my-3"
+                        onChange={(event) => { 
+                            setAlbumTitle(event.target.value);
+                        }}
+                    ></input>
+                </div>
+                
                 <input 
                     type="file" 
                     className="form-control my-3"

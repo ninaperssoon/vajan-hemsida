@@ -102,12 +102,11 @@ h3 {
 .hero-image {
   position: relative;
   width: 100%;
-  height: 600px; /* Justera höjden efter behov */
-  background-image: url('./images/vårbal_2024.jpg');
+  height: 500px; /* Justera höjden efter behov */
+  background-image: url('./images/vajan_jubileum.jpg');
   background-size: cover;
-  background-position: center;
   background-attachment: fixed;
-  background-position: center;
+  background-position: bottom;
   background-repeat: no-repeat;
   z-index: 1;
 }
@@ -577,7 +576,7 @@ a {
 }
 
 .create-label {
-  font-size: 25px;
+  font-size: 20px;
 }
 .create-container .inputGp {
   margin-top: 30px;
@@ -817,9 +816,7 @@ textarea {
 }
 
 .day-date {
-  background-color: var(--bg-date);
-  border-color: var(--date-border);
-  border-style: solid;
+  
   font-size: small;
   border-radius: 2em;
   border-width: 0.12em;
@@ -867,6 +864,9 @@ textarea {
   }
   .day-date {
     border-radius: 0.5em;
+    background-color: var(--bg-date);
+    border-color: var(--date-border);
+    border-style: solid;
   }
   .day-box {
     width: 100%;
@@ -898,6 +898,10 @@ textarea {
     display: none;
   }
 
+  .legend {
+    display: none;
+  }
+
   .month-nav h3 {
     text-align: center;
   }
@@ -913,7 +917,8 @@ textarea {
     padding: 0;
   }
   .calendar-container {
-    margin-top: 3em;
+    margin-top: 2em;
+    margin-bottom: 2em;
   }
   
   .day-box .day-date {

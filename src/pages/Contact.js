@@ -29,12 +29,12 @@ function Contact () {
                 <div className="col-md-6">
                     <h3 className="my-3 mt-5 mt-sm-3">Facebook</h3>
                     <p className="info-text">
-                        Facebookgruppen <a className="info-text" href="https://www.facebook.com/groups/hbfvajan">Vajan</a>
+                        Facebookgruppen <a className="info-text" href="https://www.facebook.com/groups/hbfvajan" target="_blank">Vajan</a>
                     </p>
 
                     <h3 className="mt-5 mb-3">Instagram</h3>
                     <p className="info-text">
-                        <a className="info-text" href="https://www.instagram.com/hbf_vajan/">@hbf_vajan</a>
+                        <a className="info-text" href="https://www.instagram.com/hbf_vajan/" target="_blank">@hbf_vajan</a>
                     </p>
 
                     <h3 className="mt-5 mb-3">Adress</h3>

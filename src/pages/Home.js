@@ -12,11 +12,10 @@ function Home({ isAuth }) {
   const [selectedDate, setSelectedDate] = useState({ month: null, year: null });
   const [archiveDates, setArchiveDates] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); // Håller reda på vilken sida vi är på
-  const postsPerPage = 10; // Antal inlägg per sida
+  const postsPerPage = 15; // Antal inlägg per sida
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
   const maxPageButtons = 3; // Number of page buttons to show
@@ -41,7 +40,10 @@ function Home({ isAuth }) {
     return [currentPage - 1, currentPage, currentPage + 1];
   };
 
-
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  
   const deletePost = async (id) => {
     const postDoc = doc(db, "posts", id);
     await deleteDoc(postDoc);
@@ -157,7 +159,7 @@ function Home({ isAuth }) {
         </div>
       </div>
 
-      <div className="homePage">
+      <div className="homePage" id="document">
         <div className="mb-4 px-lg-5 px-md-2 px-1 py-3">
           <div className="row px-md-5 ">
             <div className="col-lg-3 col-md-6 ">
@@ -314,7 +316,7 @@ function Home({ isAuth }) {
                 )}
               <div className="justify-content-center d-flex">
                 <nav aria-label="Page navigation example">
-                  <ul className="pagination">
+                  <ul className="pagination" id="pagination">
                     {/* Previous Button */}
                     <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
                       <button

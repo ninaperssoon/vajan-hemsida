@@ -77,20 +77,23 @@ function AddEvents() {
     <div className='createPostPage my-3'>
       <div className='create-container aeContainer'>
         <h2>Skapa event</h2>
-        <div className='inputGp'>
-          <label className='create-label'>Eventnamn:</label>
+        <div>
+          <label className='create-label my-2'>Eventnamn:</label>
           <input 
             placeholder='Titel...' 
+            type='text'
             value={eventTitle}
             onChange={(event) => setEventTitle(event.target.value)}
+            className='form-control'
           />
         </div>
-        <div className='inputGp'>
-          <label className='create-label'>Datum:</label>
+        <div >
+          <label className='create-label my-2'>Datum:</label>
           <input 
             type="date" 
             value={eventDate || ''} // Hantera null-värde för eventDate
             onChange={(event) => setEventDate(event.target.value)}
+            className='form-control'
           />
         </div>
 
@@ -122,23 +125,27 @@ function AddEvents() {
         </div>
         
         <button onClick={handleAddEvent}>Lägg till</button>
-        <button onClick={handleUpload}>Publicera</button>
+        
       </div>
-      <div className='event-list create-container aeContainer p-2 my-2'>
-        <h3>Eventlista</h3>
+      <div className='event-list create-container aeContainer mt-3'>
+        <h2 >Eventlista</h2>
         <ul>
           {events.map((event, index) => (
-            <li key={index}>
-              {event.title} - {event.date} - {event.type}
-              <button 
-                onClick={() => handleDeleteEvent(index)} 
-                className='btn btn-danger btn-sm mx-2 remove-btn'
-              >
-                X
-              </button>
-            </li>
+              <li key={index} >
+                  {event.title} - {event.date} - {event.type}
+
+                  <button 
+                    onClick={() => handleDeleteEvent(index)} 
+                    className='btn btn-sm mx-2 btn-danger mt-0'
+                  >
+                    X
+                  </button>
+                
+              </li>
+            
           ))}
         </ul>
+        <button onClick={handleUpload}>Publicera</button>
       </div>
     </div>
   );
