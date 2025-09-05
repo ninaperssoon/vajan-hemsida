@@ -20,6 +20,7 @@
     "react-lazyload": "^3.2.1",
     "react-router-dom": "^6.25.1",
     "react-scripts": "5.0.1",
+    "react-tooltip": "^5.29.1",
     "slate": "^0.103.0",
     "slate-react": "^0.109.0",
     "uuid": "^10.0.0",

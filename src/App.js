@@ -12,6 +12,7 @@ import PrivateRoutes from './pages/PrivateRoutes';
 import Calendar from "./pages/Calendar";
 import AddEvents from "./pages/AddEvents";
 import BoardInfo from "./pages/BoardInfo";
+import Songbook from "./pages/Songbook";
 import { useState, useEffect } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "./firebase-config";
@@ -63,7 +64,8 @@ function App() {
             <Route path="/albums/:albumName" element={<AlbumDetail />} />
             <Route path="/calendar" element={<Calendar isAuth={isAuth}/>} />
             <Route path="/addevents" element={<PrivateRoutes component={AddEvents} />} />
-
+            <Route path="/songbook" element={< Songbook />} />
+            
           </Routes>
         </main>
 
