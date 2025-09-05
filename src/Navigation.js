@@ -56,12 +56,12 @@ const Navigation = ({ isAuth, signUserOut }) => {
               <NavLink className="nav-link" to="/contact" activeClassName="active">Kontakt</NavLink>
             </li>
 
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <NavLink className="nav-link" to="https://ninaperssoon.github.io/songbook/" activeClassName="active">Sångbok länk</NavLink>
-            </li>
+            </li> */}
 
             <li className="nav-item">
-              <NavLink className="nav-link" to="/songbook" activeClassName="active">Sångbok här</NavLink>
+              <NavLink className="nav-link" to="/songbook" activeClassName="active">Sångbok</NavLink>
             </li>
 
             {!isAuth ? (

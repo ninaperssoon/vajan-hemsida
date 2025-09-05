@@ -1,17 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.e7237407.css",
-    "main.js": "/static/js/main.019ff905.js",
+    "main.css": "/static/css/main.91b8548e.css",
+    "main.js": "/static/js/main.293b2c47.js",
     "static/js/453.04adb2f9.chunk.js": "/static/js/453.04adb2f9.chunk.js",
     "static/media/vajan_jubileum.jpg": "/static/media/vajan_jubileum.d8e1553fecbdf738bfc5.jpg",
+    "static/media/v-logo-vit.png": "/static/media/v-logo-vit.fc43be48b6e98d8537ff.png",
     "static/media/logoRed.png": "/static/media/logoRed.0c5c3c5863cd009375b2.png",
     "index.html": "/index.html",
-    "main.e7237407.css.map": "/static/css/main.e7237407.css.map",
-    "main.019ff905.js.map": "/static/js/main.019ff905.js.map",
+    "main.91b8548e.css.map": "/static/css/main.91b8548e.css.map",
+    "main.293b2c47.js.map": "/static/js/main.293b2c47.js.map",
     "453.04adb2f9.chunk.js.map": "/static/js/453.04adb2f9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e7237407.css",
-    "static/js/main.019ff905.js"
+    "static/css/main.91b8548e.css",
+    "static/js/main.293b2c47.js"
   ]
 }
