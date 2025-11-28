@@ -4,7 +4,7 @@ import './header.css'
 function Header() {
     return (
         <div id='song-header-container'>
-            <img src={logo} ></img>
+            <img src={logo} alt="Vajans logga"></img>
             <h1>Vajans lilla röda</h1>
         </div>
     )

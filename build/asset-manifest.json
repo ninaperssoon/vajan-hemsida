@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.98e4b8d4.css",
-    "main.js": "/static/js/main.f1070c3d.js",
-    "static/js/453.04adb2f9.chunk.js": "/static/js/453.04adb2f9.chunk.js",
+    "main.css": "/static/css/main.c490fbc4.css",
+    "main.js": "/static/js/main.25ac59da.js",
+    "static/js/453.7aade0f4.chunk.js": "/static/js/453.7aade0f4.chunk.js",
     "static/media/vajan_jubileum.jpg": "/static/media/vajan_jubileum.d8e1553fecbdf738bfc5.jpg",
     "static/media/v-logo-vit.png": "/static/media/v-logo-vit.fc43be48b6e98d8537ff.png",
     "static/media/logoRed.png": "/static/media/logoRed.0c5c3c5863cd009375b2.png",
     "index.html": "/index.html",
-    "main.98e4b8d4.css.map": "/static/css/main.98e4b8d4.css.map",
-    "main.f1070c3d.js.map": "/static/js/main.f1070c3d.js.map",
-    "453.04adb2f9.chunk.js.map": "/static/js/453.04adb2f9.chunk.js.map"
+    "main.c490fbc4.css.map": "/static/css/main.c490fbc4.css.map",
+    "main.25ac59da.js.map": "/static/js/main.25ac59da.js.map",
+    "453.7aade0f4.chunk.js.map": "/static/js/453.7aade0f4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.98e4b8d4.css",
-    "static/js/main.f1070c3d.js"
+    "static/css/main.c490fbc4.css",
+    "static/js/main.25ac59da.js"
   ]
 }

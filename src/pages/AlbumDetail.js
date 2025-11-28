@@ -146,7 +146,7 @@ function AlbumDetail() {
             <div className="photo" key={index}>
               <img 
                 src={photoUrl} 
-                alt={`Photo ${index + 1}`} 
+                alt={`Albumfoto nr ${index + 1}`} 
                 className='photo-image'
                 onClick={() => openOverlay(index)}
                 loading="lazy" 
@@ -167,7 +167,7 @@ function AlbumDetail() {
         <div className="overlay">
           <button className="close-button mt-5" onClick={closeOverlay}>×</button>
           <button className="prev-button" onClick={showPreviousPhoto}>←</button>
-          <img src={loadedPhotos[currentIndex]} alt={`Photo ${currentIndex + 1}`} className="overlay-image mt-5" />
+          <img src={loadedPhotos[currentIndex]} alt={`Albumfoto nr ${currentIndex + 1}`} className="overlay-image mt-5" />
           <button className="next-button" onClick={showNextPhoto}>→</button>
         </div>
       )}

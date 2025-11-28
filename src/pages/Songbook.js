@@ -104,6 +104,7 @@ function Songbook() {
               <a
                 onClick={() => filterByCategory(cat)}
                 className={activeCategory === cat ? "nav-active" : ""}
+                href="#"
               >
                 {cat === "All" ? "Alla sånger" : cat}
               </a>
@@ -120,7 +121,7 @@ function Songbook() {
           />
           <div id="register">
             Eller bläddra bland alla sånger i{" "}
-            <a onClick={openRegister}>Registret</a>
+            <a onClick={openRegister} href="#">Registret</a>
           </div>
         </div>
       </div>
@@ -148,6 +149,7 @@ function Songbook() {
                   <a
                     key={song.id}
                     onClick={() => closeRegisterAndScrollToSong(song.id)}
+                    href="#"
                   >
                     {song.title}
                   </a>

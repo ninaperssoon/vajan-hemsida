@@ -75,13 +75,13 @@ function App() {
           <p>Du hittar oss här:</p>
           <ul>
             <li>
-              <a href="https://www.facebook.com/groups/hbfvajan" target="_blank">
-                <img className="socials-image" src={facebookLogo}></img>
+              <a href="https://www.facebook.com/groups/hbfvajan" target="_blank" rel="noreferrer">
+                <img className="socials-image" src={facebookLogo} alt="Facebook"></img>
               </a>
             </li>
             <li>
-              <a href="https://www.instagram.com/hbf_vajan/" target="_blank">
-                <img className="socials-image" src={instagramLogo}></img>
+              <a href="https://www.instagram.com/hbf_vajan/" target="_blank" rel="noreferrer">
+                <img className="socials-image" src={instagramLogo} alt="Instagram"></img>
               </a>
             </li>
             

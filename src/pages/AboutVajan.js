@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getDocs, collection, deleteDoc, doc, query, orderBy } from "firebase/firestore";
+import { getDocs, collection } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
 
 function AboutVajan () {
