@@ -79,6 +79,7 @@ header {
 
 #song-container {
     margin-bottom: 3rem;
+    scroll-margin-top: 200px;
 }
 
 .songtitle-container {
@@ -88,6 +89,7 @@ header {
 .song-div {
     width: 85%;
     margin: 0 auto;
+    scroll-margin-top: 200px;
 }
 
 .nav-active {

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Header from "./header";
 import { getSongData } from "./data-retriever";
 import "./songs.css";
+import { Tooltip } from 'react-tooltip'
+
 
 function Songbook() {
   const [songs, setSongs] = useState([]);
@@ -42,10 +44,15 @@ function Songbook() {
       setSongs(filtered);
     }
   
+    console.log("Trying to scroll..."); // Debug
+    console.log("Current scroll position:", window.scrollY); // Debug
+  
     setTimeout(() => {
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0; // För äldre browsers
-    }, 50);
+      document.getElementById('song-container')?.scrollIntoView({ 
+        behavior: "smooth", 
+        block: "start" 
+      });
+    }, 100);
   };
 
   // --- Filtrera efter sökning ---
@@ -77,11 +84,10 @@ function Songbook() {
     setTimeout(() => {
       const songElement = document.getElementById(`song-${songId}`);
       if (songElement) {
-        const elementPosition = songElement.offsetTop;
-        const offset = 200; // Justera detta värde
-        
-        document.documentElement.scrollTop = elementPosition - offset;
-        document.body.scrollTop = elementPosition - offset;
+        songElement.scrollIntoView({ 
+          behavior: "smooth", 
+          block: "start" 
+        });
       }
     }, 100);
   };
@@ -89,7 +95,7 @@ function Songbook() {
   return (
     <div id="songbook">
       <Header />
-
+      <Tooltip id="tooltip" />
       {/* --- Navigation --- */}
       <div id="song-nav">
         <ul>
@@ -127,16 +133,26 @@ function Songbook() {
             <button onClick={closeRegister}>
               <p>x</p>
             </button>
-            <div id="overlay-content">
-                {allSongs
-                    .slice()
-                    .sort((a, b) => a.title.localeCompare(b.title))
-                    .map((song) => (
-                    <a key={song.id} onClick={() => closeRegisterAndScrollToSong(song.id)}>
-                        {song.title}
-                    </a>
-                    ))}
-                </div>
+            <div
+              id="overlay-content"
+              style={{
+                maxHeight: "70vh",
+                overflowY: "auto",
+                paddingRight: "0.5rem"
+              }}
+            >
+              {allSongs
+                .slice()
+                .sort((a, b) => a.title.localeCompare(b.title))
+                .map((song) => (
+                  <a
+                    key={song.id}
+                    onClick={() => closeRegisterAndScrollToSong(song.id)}
+                  >
+                    {song.title}
+                  </a>
+                ))}
+            </div>
           </div>
         )}
 
