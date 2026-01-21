@@ -147,7 +147,7 @@ function UploadSongs () {
                     <Dropdown.Item eventKey='Vajan'>Vajan</Dropdown.Item>
                     <Dropdown.Item eventKey='Norrlands'>Norrlands</Dropdown.Item>
                     <Dropdown.Item eventKey='Klassiker'>Klassiker</Dropdown.Item>
-                    <Dropdown.Item eventKey='Övrigt'>Övrigt</Dropdown.Item>
+                    <Dropdown.Item eventKey='Vänner'>Vänner</Dropdown.Item>
                 </Dropdown.Menu>
                 </Dropdown>
             </div>
