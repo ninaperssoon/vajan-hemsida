@@ -483,24 +483,32 @@ hr {
 }
 
 .btn-primary {
-  background-color: var(--bg-primary);
-  border-color: var(--primary-focus-color);
+  background-color: var(--bg-primary) !important;
+  border-color: var(--primary-focus-color) !important;
+  color: white !important;
 }
 
+/* Hover */
 .btn-primary:hover {
-  background-color: var(--primary-focus-color);
-  border-color: var(--primary-focus-color);
+  background-color: var(--primary-focus-color) !important;
+  border-color: var(--primary-focus-color) !important;
 }
 
-.btn-primary .active {
-  background-color: var(--primary-active-color);
-  border-color: var(--primary-active-color);
+/* Fokus */
+.btn-primary:focus,
+.btn-primary:focus-visible {
+  background-color: var(--primary-focus-color) !important;
+  border-color: var(--primary-focus-color) !important;
+  box-shadow: none !important; /* tar bort blå glow */
 }
 
-.btn .btn-primary:focus {
-  background-color: var(--primary-focus-color);
-  border-color: var(--primary-focus-color);
+/* När knappen är nedtryckt (active) */
+.btn-primary:active,
+.btn-primary.active {
+  background-color: var(--primary-active-color) !important;
+  border-color: var(--primary-active-color) !important;
 }
+
 
 .btn-link {
   color: var(--default-link-color);

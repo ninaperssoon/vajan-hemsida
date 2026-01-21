@@ -99,7 +99,7 @@ function UploadImages() {
                     }}
                     multiple
                 />
-                <button onClick={uploadImages}> Ladda upp bilder </button>
+                <button className='btn btn-primary' onClick={uploadImages}> Ladda upp bilder </button>
 
             </div>
         </div>

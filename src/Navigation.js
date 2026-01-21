@@ -92,6 +92,9 @@ const Navigation = ({ isAuth, signUserOut }) => {
                 <li className="nav-item">
                   <NavLink className="nav-link" to="/addevents" activeClassName="active" onClick={handleNavLinkClick}>Lägg till event</NavLink>
                 </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/uploadsongs" activeClassName="active" onClick={handleNavLinkClick}>Lägg till sång</NavLink>
+                </li>
                 <button className="btn btn-primary" onClick={() => { signUserOut(); collapseNavbar(); }}>Logga ut</button>
               </>
             )}

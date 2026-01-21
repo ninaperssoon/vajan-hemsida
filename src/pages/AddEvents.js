@@ -131,7 +131,7 @@ function AddEvents() {
           </Dropdown>
         </div>
         
-        <button onClick={handleAddEvent}>Lägg till</button>
+        <button className='btn btn-primary' onClick={handleAddEvent}>Lägg till</button>
       </div>
       <div className='event-list create-container aeContainer mt-3'>
         <h2 >Eventlista</h2>
@@ -151,7 +151,7 @@ function AddEvents() {
             
           ))}
         </ul>
-        <button onClick={handleUpload}>Publicera</button>
+        <button className='btn btn-primary' onClick={handleUpload}>Publicera</button>
       </div>
     </div>
   );

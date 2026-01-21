@@ -167,7 +167,7 @@ function CreatePost() {
           </div>
         </div>
         
-        <button onClick={createPost}>Publicera</button>
+        <button className='btn btn-primary' onClick={createPost}>Publicera</button>
       </div>
     </div>
   );
