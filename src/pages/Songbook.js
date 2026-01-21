@@ -29,11 +29,9 @@ function Songbook() {
   const getSongs = async () => {
     const songsCollection = collection(db, "songs");
     const songsSnapshot = await getDocs(songsCollection);
-    const songsList = songsSnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
-    console.log(songsList);
+    const songsList = songsSnapshot.docs
+      .map(doc => ({ id: doc.data().id, ...doc.data() }))
+      .sort((a, b) => a.id - b.id);
     setSongs(songsList);
     setAllSongs(songsList);
   };
@@ -150,7 +148,7 @@ function Songbook() {
             >
               {allSongs
                 .slice()
-                .sort((a, b) => a.title.localeCompare(b.title))
+                .sort((a, b) => a.id - b.id)
                 .map((song) => (
                   <a
                     key={song.id}

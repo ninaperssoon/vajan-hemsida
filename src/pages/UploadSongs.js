@@ -5,6 +5,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { auth, db, storage } from '../firebase-config';
 import { useNavigate } from 'react-router-dom'; 
 import Dropdown from 'react-bootstrap/Dropdown';
+import { query, orderBy } from 'firebase/firestore';
 
 
 function UploadSongs () {
@@ -22,42 +23,35 @@ function UploadSongs () {
 
 
     async function uploadSong() {
-        if (!title || !text || !selectedCategory) {
-            alert('Vänligen fyll i titel, text och kategori.');
+        if (!title || !text || !selectedCategory || selectedCategory === "Välj kategori") {
+            alert('Fyll i titel, text och kategori.');
             return;
         }
     
-        // Hämta alla dokument
-        const querySnapshot = await getDocs(postCollectionRef);
+        // Hämta högsta id
+        const songsRef = collection(db, "songs");
+        const q = query(songsRef, orderBy("id", "desc"));
+        const querySnapshot = await getDocs(q);
     
-        // Hitta högsta numeriska id
         let maxId = 0;
-        querySnapshot.forEach(docSnap => {
-            const data = docSnap.data();
-            const idNum = Number(data.id);
-            if (!isNaN(idNum) && idNum > maxId) {
-                maxId = idNum;
-            }
+        if (!querySnapshot.empty) {
+            maxId = querySnapshot.docs[0].data().id; // id är redan nummer
+        }
+        const nextId = maxId + 1;
+    
+        // Lägg till sången
+        await setDoc(doc(db, "songs", String(nextId)), {
+            id: nextId,
+            title,
+            author: author || "",
+            melody: melody || "",
+            text,
+            category: selectedCategory,
+            info: info || ""
         });
     
-        const nextId = maxId + 1; 
-    
-        try {
-            await setDoc(doc(db, "songs", String(nextId)), {
-                id: nextId,
-                title,
-                author: author || "",
-                melody: melody || "",
-                text,
-                category: selectedCategory
-            });
-    
-            alert('Sången har publicerats!');
-            navigate("/");
-        } catch (error) {
-            console.error(error);
-            alert('Det gick inte att publicera sången. Försök igen senare.');
-        }
+        alert('Sången har publicerats!');
+        navigate("/");
     }
     
     
