@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import Header from "./header";
-import { getSongData } from "./data-retriever";
 import "./songs.css";
 import { Tooltip } from 'react-tooltip'
+import { getDocs, collection } from "firebase/firestore";
+import { db } from "../firebase-config";
 
 
 function Songbook() {
@@ -15,12 +16,7 @@ function Songbook() {
 
   // --- Ladda låtar ---
   useEffect(() => {
-    async function fetchSongs() {
-      const data = await getSongData();
-      setSongs(data);
-      setAllSongs(data);
-    }
-    fetchSongs();
+    getSongs();
   }, []);
 
   useEffect(() => {
@@ -28,7 +24,19 @@ function Songbook() {
       window.scrollTo({ top: 0, behavior: "smooth" });
       setScrollToTopFlag(false);
     }
-  }, [scrollToTopFlag]); // Bara scrollToTopFlag här, INTE songs
+  }, [scrollToTopFlag]); 
+
+  const getSongs = async () => {
+    const songsCollection = collection(db, "songs");
+    const songsSnapshot = await getDocs(songsCollection);
+    const songsList = songsSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    console.log(songsList);
+    setSongs(songsList);
+    setAllSongs(songsList);
+  };
 
   // --- Filtrera efter kategori ---
   const filterByCategory = (category) => {
@@ -44,8 +52,6 @@ function Songbook() {
       setSongs(filtered);
     }
   
-    console.log("Trying to scroll..."); // Debug
-    console.log("Current scroll position:", window.scrollY); // Debug
   
     setTimeout(() => {
       document.getElementById('song-container')?.scrollIntoView({ 
@@ -187,7 +193,7 @@ function Songbook() {
                 )}
               </div>
 
-              <p style={{ whiteSpace: "pre-line" }}>{song.text}</p>
+              <p style={{ whiteSpace: "pre-line" }}>{song.text.replace(/\\n/g, "\n")}</p>
             </div>
           ))
         ) : (
